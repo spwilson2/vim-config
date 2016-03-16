@@ -266,7 +266,7 @@ if has("autocmd")
                 \ endif
 
     """""        Markdown,Text    """"""
-	au BufNew,BufRead *.md set filetype=markdown
+	au BufNew,BufRead *.md setl filetype=markdown
 	au Filetype markdown,text call PlainText()
 
     """""         Make            """"""
