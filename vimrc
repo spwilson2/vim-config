@@ -266,7 +266,8 @@ if has("autocmd")
                 \ endif
 
     """""        Markdown,Text    """"""
-	au Filetype markdown,text :call PlainText()
+	au BufNew,BufRead *.md set filetype=markdown
+	au Filetype markdown,text call PlainText()
 
     """""         Make            """"""
     au FileType make setl noexpandtab "On make files, don't use tab rules
