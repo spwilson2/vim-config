@@ -30,7 +30,6 @@ Plugin 'tmhedberg/SimpylFold'
 " Autocompletion. Go to github for install docs.
 Plugin 'Valloric/YouCompleteMe'
 
-
 """"            Better than an IDE Plugins             """"
 " Helps with surrounding items in brackets/parthenesis etc.
 " Plugin 'tpope/vim-surround'
@@ -40,6 +39,7 @@ Plugin 'Valloric/YouCompleteMe'
 
 " Git integration
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 
 
 """"               Filesystem Management                """"
@@ -141,6 +141,9 @@ endfunction
 " Set the toggle for pastemode to <F2>
 set pastetoggle=<F2>
 
+" Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy
+nnoremap Y y$
+
 " Manually regen ctags
 nnoremap <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 
@@ -196,6 +199,7 @@ if has('gui_running')
     set background=dark
     colorscheme solarized
 else
+    set background=dark
     colorscheme zenburn
     highlight Pmenu ctermfg=darkgreen  ctermbg=black
     highlight PmenuSel ctermfg=black  ctermbg=darkblue
@@ -270,6 +274,7 @@ if has("autocmd")
     """""        Markdown,Text    """"""
 	au BufNew,BufRead *.md setl filetype=markdown
 	au Filetype markdown,text call PlainText()
+    au FileType markdown setl expandtab
 
     """""         Make            """"""
     au FileType make setl noexpandtab "On make files, don't use tab rules
