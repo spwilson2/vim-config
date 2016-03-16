@@ -159,6 +159,8 @@ nnoremap <silent> ]B :blast<CR>
 " Toggle linenumbers.
 nnoremap <C-N> :set invnumber<CR>
 
+nnoremap <Leader>sc :set invspell<CR>
+
 " Remove the Windows ^M
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
