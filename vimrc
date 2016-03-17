@@ -156,6 +156,9 @@ nnoremap Y y$
 " Manually regen ctags
 nnoremap <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 
+" Toggle Spell Check.
+nnoremap <Leader>sc :set invspell<CR>
+
 " Split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
