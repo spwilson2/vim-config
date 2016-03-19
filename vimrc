@@ -22,14 +22,13 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugin 'altercation/vim-colors-solarized'
 " Plugin 'sandeepsinghmails/Dev_Delight'
 
+
 " XTERM
-Plugin 'jnurmine/Zenburn'
+" Plugin 'jnurmine/Zenburn'
+ Plugin 'NLKNguyen/papercolor-theme'
 
 " Need to change colors to work well
-Plugin 'joshdick/onedark.vim'
-
-Plugin 'mkarmona/colorsbox'
-
+" Plugin 'joshdick/onedark.vim'
 
 """                     IDE Plugins                    """"
 " Auto check syntax
@@ -142,8 +141,6 @@ function! Preserve(command)
     call cursor(l, c)
 endfunction
 
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """  =>                  Hotkeys                       """"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -210,17 +207,14 @@ syntax enable   " Enable syntax highlighting
 if has('gui_running')
     "set background=dark
     "colorscheme solarized
-    colorscheme Dev_Delight
-    set background=light
+    "colorscheme Dev_Delight
+    "colorscheme onedark
+    "set background=light
 else
 
-    colorscheme onedark
-    """"""" Zenburn """""""""""
-    "colorscheme zenburn
-    "colorscheme colorsbox-stbright
-    "highlight Pmenu ctermfg=darkgreen  ctermbg=black
-    "highlight PmenuSel ctermfg=black  ctermbg=darkblue
-    "set background=dark
+    set background=dark
+    "colorscheme onedark
+    colorscheme PaperColor
 endif
 
 " No annoying sound on errors
