@@ -25,10 +25,10 @@ Plugin 'VundleVim/Vundle.vim'
 
 " XTERM
 " Plugin 'jnurmine/Zenburn'
- Plugin 'NLKNguyen/papercolor-theme'
+" Plugin 'NLKNguyen/papercolor-theme'
 
 " Need to change colors to work well
-" Plugin 'joshdick/onedark.vim'
+ Plugin 'joshdick/onedark.vim'
 
 """                     IDE Plugins                    """"
 " Auto check syntax
@@ -212,9 +212,9 @@ if has('gui_running')
     "set background=light
 else
 
-    set background=dark
-    "colorscheme onedark
-    colorscheme PaperColor
+    "set background=dark
+    colorscheme onedark
+    "colorscheme PaperColor
 endif
 
 " No annoying sound on errors
@@ -251,7 +251,7 @@ noremap <silent> <Leader>l :set invhls<cr><C-l>
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ cwd:\ %{getcwd()}\ \ \ %=Buf:\ [%n]\ %l,%c
 " Returns true if paste mode is enabled
 function! HasPaste()
     if &paste
