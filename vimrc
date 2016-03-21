@@ -177,7 +177,7 @@ nnoremap <Leader>sc :set invspell<CR>
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " %% can be used to get the directory of the file in the current buffer.
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+"cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Remove trailing whitespace and preserve the previous search pattern
 nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
@@ -185,13 +185,13 @@ nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 "%% is maped to the directory of % (The active buffer)
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 " Edit from current file directory
-noremap <leader>ew :e %%
+map <leader>ew :e %%
 " Split from current file dir
-noremap <leader>es :sp %%
+map <leader>es :sp %%
 " VSplit from current file dir
-noremap <leader>ev :vsp %%
+map <leader>ev :vsp %%
 " Tab from currrent file dir
-noremap <leader>et :tabe %%
+map <leader>et :tabe %%
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """  =>                  Visuals                       """"
