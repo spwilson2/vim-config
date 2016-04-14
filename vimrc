@@ -36,7 +36,11 @@ Plugin 'scrooloose/syntastic'
 " Improve folding of functions.
 Plugin 'tmhedberg/SimpylFold'
 " Autocompletion. Go to github for install docs.
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'mfukar/robotframework-vim'
+
+Plugin 'fatih/vim-go'
 
 """"            Better than an IDE Plugins             """"
 " Helps with surrounding items in brackets/parthenesis etc.
@@ -111,6 +115,9 @@ set fileformat=unix
 
 " Allow traveling between buffers without the error prompt (liberally hides buffers)
 set hidden
+
+" Disable vim modeline reading.
+set nomodeline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """  =>                  Functions                     """"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -306,6 +313,7 @@ if has("autocmd")
 
     " Source the vimrc file after saving it
     " autocmd bufwritepost .vimrc source $MYVIMRC
+    au FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 
 endif
 
