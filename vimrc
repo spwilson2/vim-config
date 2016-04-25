@@ -36,7 +36,7 @@ Plugin 'scrooloose/syntastic'
 " Improve folding of functions.
 Plugin 'tmhedberg/SimpylFold'
 " Autocompletion. Go to github for install docs.
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'mfukar/robotframework-vim'
 
@@ -291,7 +291,7 @@ if has("autocmd")
                 \ endif
 
     """""        Markdown,Text    """"""
-	au BufNew,BufRead *.md setl filetype=markdown
+    "au BufNew,BufRead *.md setl =markdown
 	au Filetype markdown,text call PlainText()
     au FileType markdown setl expandtab
 
@@ -313,7 +313,7 @@ if has("autocmd")
 
     " Source the vimrc file after saving it
     " autocmd bufwritepost .vimrc source $MYVIMRC
-    au FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+    au BufNewFile,BufEnter go setl tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 
 endif
 
@@ -323,6 +323,9 @@ endif
 
 " syntastic, if python 3 not working. Set the path.
 let g:syntastic_python_python_exec = '/usr/bin/python3'
+"let g:ycm_python_binary_path = '/usr/bin/python3'
+let gycm_path_to_python_interpreter = '/usr/bin/python3'
+" let g:= '/usr/bin/python3'
 
 " nerdtree
 " map <Tab> :NERDTreeToggle<CR>
