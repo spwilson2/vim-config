@@ -25,7 +25,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " XTERM
 " Plugin 'jnurmine/Zenburn'
- Plugin 'NLKNguyen/papercolor-theme'
+" Plugin 'NLKNguyen/papercolor-theme'
 
 " Need to change colors to work well
  Plugin 'joshdick/onedark.vim'
@@ -37,6 +37,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tmhedberg/SimpylFold'
 " Autocompletion. Go to github for install docs.
 Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'mfukar/robotframework-vim'
+
+Plugin 'fatih/vim-go'
 
 """"            Better than an IDE Plugins             """"
 " Helps with surrounding items in brackets/parthenesis etc.
@@ -111,6 +115,9 @@ set fileformat=unix
 
 " Allow traveling between buffers without the error prompt (liberally hides buffers)
 set hidden
+
+" Disable vim modeline reading.
+set nomodeline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """  =>                  Functions                     """"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -177,7 +184,7 @@ nnoremap <Leader>sc :set invspell<CR>
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " %% can be used to get the directory of the file in the current buffer.
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+"cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Remove trailing whitespace and preserve the previous search pattern
 nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
@@ -185,13 +192,13 @@ nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 "%% is maped to the directory of % (The active buffer)
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 " Edit from current file directory
-noremap <leader>ew :e %%
+map <leader>ew :e %%
 " Split from current file dir
-noremap <leader>es :sp %%
+map <leader>es :sp %%
 " VSplit from current file dir
-noremap <leader>ev :vsp %%
+map <leader>ev :vsp %%
 " Tab from currrent file dir
-noremap <leader>et :tabe %%
+map <leader>et :tabe %%
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """  =>                  Visuals                       """"
@@ -251,7 +258,7 @@ noremap <silent> <Leader>l :set invhls<cr><C-l>
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ cwd:\ %{getcwd()}\ \ \ %=Buf:\ [%n]\ %l,%c
 " Returns true if paste mode is enabled
 function! HasPaste()
     if &paste
@@ -284,7 +291,7 @@ if has("autocmd")
                 \ endif
 
     """""        Markdown,Text    """"""
-	au BufNew,BufRead *.md setl filetype=markdown
+    "au BufNew,BufRead *.md setl =markdown
 	au Filetype markdown,text call PlainText()
     au FileType markdown setl expandtab
 
@@ -317,6 +324,7 @@ if has("autocmd")
 
     " Source the vimrc file after saving it
     " autocmd bufwritepost .vimrc source $MYVIMRC
+    au BufNewFile,BufEnter go setl tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 
 endif
 
@@ -326,6 +334,9 @@ endif
 
 " syntastic, if python 3 not working. Set the path.
 let g:syntastic_python_python_exec = '/usr/bin/python3'
+"let g:ycm_python_binary_path = '/usr/bin/python3'
+let gycm_path_to_python_interpreter = '/usr/bin/python3'
+" let g:= '/usr/bin/python3'
 
 " nerdtree
 " map <Tab> :NERDTreeToggle<CR>
