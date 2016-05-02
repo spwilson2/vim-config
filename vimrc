@@ -28,7 +28,7 @@ Plugin 'VundleVim/Vundle.vim'
  Plugin 'NLKNguyen/papercolor-theme'
 
 " Need to change colors to work well
-" Plugin 'joshdick/onedark.vim'
+ Plugin 'joshdick/onedark.vim'
 
 """                     IDE Plugins                    """"
 " Auto check syntax
@@ -212,9 +212,9 @@ if has('gui_running')
     "set background=light
 else
 
-    set background=dark
-    "colorscheme onedark
-    colorscheme PaperColor
+    "set background=dark
+    colorscheme onedark
+    "colorscheme PaperColor
 endif
 
 " No annoying sound on errors
@@ -304,6 +304,17 @@ if has("autocmd")
     " auto remove trailing whitespace on save
     au BufWritePre *.py :call Preserve("%s/\\s\\+$//e")
 
+	" Don't linebreak in shell scripts.
+	au FileType sh :call PlainText() | set nospell
+
+
+    """""           C             """"""
+    au FileType C, setl tabstop=8 |
+    setl softtabstop=8 |
+    setl shiftwidth=8 |
+    setl noexpandtab
+
+
     " Source the vimrc file after saving it
     " autocmd bufwritepost .vimrc source $MYVIMRC
 
@@ -337,6 +348,5 @@ endif
 "To make use of syntastic and vim-flake8 you need to have flake8 and pylint installed.
 
 "set whichwrap+=<,>",h,l
-
+set t_ut=
 " Linux standards.
-"nmap <c-l> :set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab<CR>
