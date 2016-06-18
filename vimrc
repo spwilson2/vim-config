@@ -1,78 +1,7 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Vundle                        """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
 
-" Find more plugins here
-" http://vimawesome.com/
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-"""                     Colorschemes                   """"
-
-" GUI
-" Plugin 'altercation/vim-colors-solarized'
-" Plugin 'sandeepsinghmails/Dev_Delight'
-
-
-" XTERM
-" Plugin 'jnurmine/Zenburn'
-" Plugin 'NLKNguyen/papercolor-theme'
-
-" Need to change colors to work well
- Plugin 'joshdick/onedark.vim'
-
-"""                     IDE Plugins                    """"
-" Auto check syntax
-Plugin 'scrooloose/syntastic'
-" Improve folding of functions.
-Plugin 'tmhedberg/SimpylFold'
-" Autocompletion. Go to github for install docs.
-Plugin 'Valloric/YouCompleteMe'
-
-Plugin 'mfukar/robotframework-vim'
-
-Plugin 'fatih/vim-go'
-
-""""            Better than an IDE Plugins             """"
-" Helps with surrounding items in brackets/parthenesis etc.
-" Plugin 'tpope/vim-surround'
-
-" Better looking tagline - NOTE: Needs configurations.
-" Plugin 'bling/vim-airline'
-
-" Git integration
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-
-
-""""               Filesystem Management                """"
-" Ctrlp to search
-" Plugin 'kien/ctrlp.vim'
-
-" Plugin 'scrooloose/nerdtree'
-
-
-"""                  Python Plugins                     """"
-" PEP 8 checking ;)
-Plugin 'nvie/vim-flake8'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------     `Vundle`   ------------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -80,21 +9,102 @@ filetype plugin indent on    " required
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+" Find more plugins here
+" http://vimawesome.com/
 
+""""""""""""""""""""""""""""""""""""
+""""    `Vundle Init`           "{{{
+""""""""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+" call vundle#begin('~/some/path/here')
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+"}}} ------------------------------
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Configs                       """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `Colorschemes`          "{{{
+""""""""""""""""""""""""""""""""""""
+" GUI
+" Plugin 'altercation/vim-colors-solarized'
+" Plugin 'sandeepsinghmails/Dev_Delight'
+
+" XTERM
+" Plugin 'jnurmine/Zenburn'
+" Plugin 'NLKNguyen/papercolor-theme'
+
+" Need to change colors to work well
+Plugin 'joshdick/onedark.vim'
+"}}} ------------------------------
+
+""""""""""""""""""""""""""""""""""""
+""""    `IDE Plugins`           "{{{
+""""""""""""""""""""""""""""""""""""
+" Auto check syntax
+Plugin 'scrooloose/syntastic'
+
+" PEP 8 checking, must have syntastic
+Plugin 'nvie/vim-flake8'
+
+" Improve folding of functions.
+Plugin 'tmhedberg/SimpylFold'
+
+" Autocompletion. Go to github for install docs.
+Plugin 'Valloric/YouCompleteMe'
+
+" Robot python syntax
+Plugin 'mfukar/robotframework-vim'
+
+" golang syntax
+Plugin 'fatih/vim-go'
+"}}} ------------------------------
+
+""""""""""""""""""""""""""""""""""""
+""""    `Git Integration`       "{{{
+""""""""""""""""""""""""""""""""""""
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+"}}} ------------------------------
+
+""""""""""""""""""""""""""""""""""""
+""""    `Text Wrangling`        "{{{
+""""""""""""""""""""""""""""""""""""
+" Helps with surrounding items in brackets/parthenesis etc.
+" Plugin 'tpope/vim-surround'
+"}}} -------------------------------
+
+""""""""""""""""""""""""""""""""""""
+""""    `Text Wrangling`        "{{{
+""""""""""""""""""""""""""""""""""""
+" Ctrlp to search
+" Plugin 'kien/ctrlp.vim'
+" Plugin 'scrooloose/nerdtree'
+"}}} -------------------------------
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"}}} ==============================================================
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `General Settings`      --------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Space is leader key
-let mapleader=" "
+set mapleader=" "
 
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+" Turn backup off
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 
-set history=100 " Set the number of undos
-
+" Set the number of undos
+set history=100
 
 " Let vim go past the last char.
 set virtualedit=onemore
@@ -102,39 +112,57 @@ set virtualedit=onemore
 " Configure backspace to remove endlines and indents
 set backspace=eol,start,indent
 
-" Linebreak on 99 characters
-set lbr
-set tw=99
-set formatoptions=tcrqj1
+" Allow traveling between buffers without the error prompt (liberally hides buffers)
+set hidden
 
-" Show the command in progress at bottom
-set showcmd
+" Disable vim modeline reading (for security).
+set modeline
+set modelines=5
 
 " Always use *nix line endings.
 set fileformat=unix
 
-" Allow traveling between buffers without the error prompt (liberally hides buffers)
-set hidden
+" Show the command in progress at bottom.
+set showcmd
+"}}}
+"}}} ==============================================================
 
-" Disable vim modeline reading.
-set nomodeline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Functions                     """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"-----------    `Defualt Filetype Config`       --------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Linebreak on 99 characters
+set linebreak
+set textwidth=80
+set formatoptions=tcrqj1
 
-function! PlainText()
-    setlocal spell spelllang=en
-    setlocal noexpandtab
-    setlocal wrap
-    setlocal linebreak
-    " Disable automatic newlines.
-    setlocal textwidth=0 
-    nnoremap j gj
-    nnoremap k gk
-    setlocal formatoptions=tcqnr21
-    " setlocal formatprg=par
-endfunction
+""""""""""""""""""""
+"""  => Tabs    """"
+""""""""""""""""""""
+set shiftwidth=4   " Width for > and < vcmds
+set tabstop=4      " Visual length of tabs
+set softtabstop=4  " Length to use spaces at instead of tabs
+set expandtab      " Use spaces instead of tabs
+set smarttab       " Tab to previous set lines
+set autoindent     " Auto indent following lines
 
+""""""""""""""""""""
+"""  Searches   """"
+""""""""""""""""""""
+" When searching try to be smart about cases
+set ignorecase
+set smartcase
+set incsearch
+
+" Highlight search results
+" set hls
+
+" Toggle highlight
+noremap <silent> <Leader>l :set invhls<cr><C-l>
+"}}} ==============================================================
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Functions`       --------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Preserves the previous state after running a command
 function! Preserve(command)
     " Preparation: save last search, and cursor position.
@@ -147,10 +175,11 @@ function! Preserve(command)
     let @/=_s
     call cursor(l, c)
 endfunction
+"}}} ==============================================================
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Hotkeys                       """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Hotkeys`       ----------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set the toggle for pastemode to <F2>
 set pastetoggle=<F2>
 
@@ -199,10 +228,11 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 " Tab from currrent file dir
 map <leader>et :tabe %%
+"}}} ==============================================================
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Visuals                       """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Visuals`       ----------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set showmatch   " Show matching brackets
 set number      " Show line numbers
 set ruler       " Always show ruler
@@ -236,24 +266,12 @@ set so=7
 
 "" Set color of the line numbers
 ":highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+"}}} ==============================================================
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Searches                      """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" When searching try to be smart about cases
-set ignorecase
-set smartcase
-set incsearch
 
-" Highlight search results
-" set hls
-
-" Toggle highlight
-noremap <silent> <Leader>l :set invhls<cr><C-l>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Status                        """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Status`       ------------------------ {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
 
@@ -266,22 +284,77 @@ function! HasPaste()
     en
     return ''
 endfunction
+"}}} ==============================================================
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Tabs                          """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set shiftwidth=4   " Width for > and < vcmds
-set tabstop=4      " Visual length of tabs
-set softtabstop=4  " Length to use spaces at instead of tabs
-set expandtab      " Use spaces instead of tabs
-set smarttab       " Tab to previous set lines
-set autoindent     " Auto indent following lines
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Plugin Configs`        --------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Disable automatic 
-set foldmethod=syntax 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Filetype configs              """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+"""   syntastic         {{{
+"""""""""""""""""""""""""""
+" if python 3 not working. Set the path.
+let g:syntastic_python_python_exec = '/usr/bin/python3'
+" }}} ---------------------
+
+"""""""""""""""""""""""""""
+"""   YouCompleteMe     {{{
+"""""""""""""""""""""""""""
+" if python 3 not working. Set the path.
+let gycm_path_to_python_interpreter = '/usr/bin/python3'
+" }}} ---------------------
+
+"""""""""""""""""""""""""""
+"""   nerdtree          {{{
+"""""""""""""""""""""""""""
+" Tab to open nerdtree
+" map <Tab> :NERDTreeToggle<CR>
+
+" Close if nerdtree is last buffer open
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" }}} ---------------------
+
+"""""""""""""""""""""""""""
+"""   ctrlp             {{{
+"""""""""""""""""""""""""""
+" Search through ctags with <,.>
+" nnoremap <leader>c :CtrlPTag<cr>
+" }}} ---------------------
+
+"""""""""""""""""""""""""""
+"""   SimpylFold        {{{
+"""""""""""""""""""""""""""
+set foldlevel=99      " Need to disable automatic folding by SimpylFold
+set foldmethod=syntax " Disable automatic folding
+if has("autocmd")
+    au FileType python set foldmethod=indent 
+endif
+" }}} ---------------------
+"}}} ==============================================================
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Misc`       -------------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"set whichwrap+=<,>",h,l
+set t_ut=
+
+function! PlainText()
+    setlocal spell spelllang=en
+    setlocal noexpandtab
+    setlocal wrap
+    setlocal linebreak
+    " Disable automatic newlines.
+    setlocal textwidth=0 
+    nnoremap j gj
+    nnoremap k gk
+    setlocal formatoptions=tcqnr21
+    " setlocal formatprg=par
+endfunction
+"}}} ==============================================================
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Filetypes`       --------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if has("autocmd")
     """""         All            """"""
@@ -292,7 +365,7 @@ if has("autocmd")
 
     """""        Markdown,Text    """"""
     "au BufNew,BufRead *.md setl =markdown
-	au Filetype markdown,text call PlainText()
+    au Filetype markdown,text call PlainText()
     au FileType markdown setl expandtab
 
     """""         Make            """"""
@@ -311,8 +384,8 @@ if has("autocmd")
     " auto remove trailing whitespace on save
     au BufWritePre *.py :call Preserve("%s/\\s\\+$//e")
 
-	" Don't linebreak in shell scripts.
-	au FileType sh :call PlainText() | set nospell
+    " Don't linebreak in shell scripts.
+    au FileType sh :call PlainText() | set nospell
 
 
     """""           C             """"""
@@ -327,37 +400,5 @@ if has("autocmd")
     au BufNewFile,BufEnter go setl tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 
 endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>               Plugin Configs                   """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" syntastic, if python 3 not working. Set the path.
-let g:syntastic_python_python_exec = '/usr/bin/python3'
-"let g:ycm_python_binary_path = '/usr/bin/python3'
-let gycm_path_to_python_interpreter = '/usr/bin/python3'
-" let g:= '/usr/bin/python3'
-
-" nerdtree
-" map <Tab> :NERDTreeToggle<CR>
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" ctrlp
-" Search through ctags with <,.>
-" nnoremap <leader>c :CtrlPTag<cr>
-
-" SimpylFold, to toggle folds za
-set foldlevel=99 " Need to disable automatic folding by SimpylFold
-if has("autocmd")
-    au FileType python set foldmethod=indent 
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""  =>                  Misc                          """"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Reminders:
-"To make use of syntastic and vim-flake8 you need to have flake8 and pylint installed.
-
-"set whichwrap+=<,>",h,l
-set t_ut=
-" Linux standards.
+"}}} ==============================================================
+"vim:set foldmethod=marker
