@@ -163,7 +163,7 @@ noremap <silent> <Leader>l :set invhls<cr><C-l>
 "------------------     `Functions`       --------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Preserves the previous state after running a command
-function Preserve(command)
+function! Preserve(command)
     " Preparation: save last search, and cursor position.
     let _s=@/
     let l = line(".")
@@ -176,14 +176,14 @@ function Preserve(command)
 endfunction
 
 " Returns true if paste mode is enabled
-function HasPaste()
+function! HasPaste()
     if &paste
         return 'PASTE MODE '
     en
     return ''
 endfunction
 
-function ReturnToLastLocation()
+function! ReturnToLastLocation()
     if line("'\"") > 0 && line("'\"") <= line("$")
         exe "normal! g`\""
     endif
@@ -314,6 +314,8 @@ let gycm_path_to_python_interpreter = '/usr/bin/python3'
 set foldlevel=99      " Need to disable automatic folding by SimpylFold
 set foldmethod=syntax " Disable automatic folding
 if has("autocmd")
+    augroup Golang
+        au!
     au FileType python set foldmethod=indent 
 endif
 "}}} -------------------------------
@@ -332,7 +334,7 @@ set t_ut=
 "------------------     `Filetypes`       --------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " The general plain text file setup
-function PlainFilyetypeConfig()
+function! PlainFilyetypeConfig()
     setlocal spell spelllang=en
     setlocal noexpandtab
     setlocal wrap
@@ -346,7 +348,7 @@ function PlainFilyetypeConfig()
 endfunction
 
 " PEP8 Compliant, python config
-function PythonFiletypeConfig()
+function! PythonFiletypeConfig()
     setl tabstop=4
     setl softtabstop=4
     setl shiftwidth=4
@@ -356,10 +358,10 @@ function PythonFiletypeConfig()
     let python_highlight_all=1
 endfunction
 
-function CUEFIFiletypeConfig()
+function! CUEFIFiletypeConfig()
 endfunction
 
-function CLinuxFiletypeConfig()
+function! CLinuxFiletypeConfig()
     setl tabstop=8
     setl softtabstop=8
     setl shiftwidth=8
@@ -367,14 +369,14 @@ function CLinuxFiletypeConfig()
     setl noexpandtab
 endfunction
 
-function GolangFiletypeConfig()
+function! GolangFiletypeConfig()
     setl tabstop=8 
     setl softtabstop=8 
     setl shiftwidth=8 
     setl noexpandtab
 endfunction
 
-function BashFiletypeConfig()
+function! BashFiletypeConfig()
     setl tabstop=4 
     setl softtabstop=4 
     setl shiftwidth=4 
@@ -382,7 +384,7 @@ function BashFiletypeConfig()
     setl noexpandtab
 endfunction
 
-function VimFiletypeConfig()
+function! VimFiletypeConfig()
     setl foldmethod=marker
     setl tabstop=4 
     setl softtabstop=4 
@@ -395,54 +397,82 @@ endfunction
 if has("autocmd")
 
     " Return to last edit position when opening files
-    au BufReadPost * call ReturnToLastLocation()
+    augroup Startup
+        au!
+        au BufReadPost * call ReturnToLastLocation()
+    augroup END
 
     """"""""""""""""""""""""""""""""""""
     """"    `Markdown, Text`        "{{{
     """"""""""""""""""""""""""""""""""""
-    au Filetype markdown,text call PlainFilyetypeConfig()
-    au FileType markdown setl expandtab
+    augroup MarkdownText
+        au!
+        au Filetype markdown,text call PlainFilyetypeConfig()
+        au FileType markdown setl expandtab
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"        `Makefile`          "{{{
     """"""""""""""""""""""""""""""""""""
     " On make files, don't use tab rules
-    au FileType make setl noexpandtab 
+    augroup Makefile
+        au!
+        au FileType make setl noexpandtab 
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"        `Python`            "{{{
     """"""""""""""""""""""""""""""""""""
-    au Filetype python call PythonFiletypeConfig()
-    " autoremove trailing whitespace on save and preserve history
-    au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
+    augroup Python
+        au!
+        au Filetype python call PythonFiletypeConfig()
+        " autoremove trailing whitespace on save and preserve history
+        au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"            `Bash`          "{{{
     """"""""""""""""""""""""""""""""""""
-    au FileType sh call BashFiletypeConfig()
+    augroup Bash
+        au!
+        au FileType sh call BashFiletypeConfig()
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"            `C`             "{{{
     """"""""""""""""""""""""""""""""""""
-    au FileType C call CLinuxFiletypeConfig()
+    augroup C
+        au!
+        au FileType C call CLinuxFiletypeConfig()
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"            `VimL`	    "{{{
     """"""""""""""""""""""""""""""""""""
-    au FileType vim call VimFiletypeConfig()
+    augroup VimL
+        au!
+        au FileType vim call VimFiletypeConfig()
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
     """"        `Golang`	    "{{{
     """"""""""""""""""""""""""""""""""""
-    au Filetype go call GolangFiletypeConfig()
+    augroup Golang
+        au!
+        au Filetype go call GolangFiletypeConfig()
+    augroup END
+
     " Source the vimrc file after saving it
-    " autocmd bufwritepost .vimrc source $MYVIMRC
+    augroup Vimrc
+        au!
+        autocmd bufwritepost .vimrc source $MYVIMRC
+    augroup END
 endif
 "}}} -------------------------------
 "}}} ==============================================================
