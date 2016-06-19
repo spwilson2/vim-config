@@ -1,3 +1,5 @@
+" Vi IMproved
+set nocompatible
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "---------------------     `Vundle`   ------------------------- {{{
@@ -15,93 +17,99 @@
 """"""""""""""""""""""""""""""""""""
 """"    `Vundle Init`           "{{{
 """"""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-" call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-"}}} ------------------------------
+if !empty(glob("~/.vim/bundle/Vundle.vim"))
+	filetype off                  " required
 
-""""""""""""""""""""""""""""""""""""
-""""    `Colorschemes`          "{{{
-""""""""""""""""""""""""""""""""""""
-" GUI
-" Plugin 'altercation/vim-colors-solarized'
-" Plugin 'sandeepsinghmails/Dev_Delight'
+	" set the runtime path to include Vundle and initialize
+	set runtimepath+=~/.vim/bundle/Vundle.vim
+	call vundle#begin()
 
-" XTERM
-" Plugin 'jnurmine/Zenburn'
-" Plugin 'NLKNguyen/papercolor-theme'
+	" alternatively, pass a path where Vundle should install plugins
+	" call vundle#begin('~/some/path/here')
+	" let Vundle manage Vundle, required
+	Plugin 'VundleVim/Vundle.vim'
+	"}}} ------------------------------
 
-" Need to change colors to work well
-Plugin 'joshdick/onedark.vim'
-"}}} ------------------------------
+	""""""""""""""""""""""""""""""""""""
+	""""    `Colorschemes`          "{{{
+	""""""""""""""""""""""""""""""""""""
+	" GUI
+	" Plugin 'altercation/vim-colors-solarized'
+	" Plugin 'sandeepsinghmails/Dev_Delight'
 
-""""""""""""""""""""""""""""""""""""
-""""    `IDE Plugins`           "{{{
-""""""""""""""""""""""""""""""""""""
-" Auto check syntax
-Plugin 'scrooloose/syntastic'
+	" XTERM
+	" Plugin 'jnurmine/Zenburn'
+	" Plugin 'NLKNguyen/papercolor-theme'
 
-" PEP 8 checking, must have syntastic
-Plugin 'nvie/vim-flake8'
+	" Need to change colors to work well
+	Plugin 'joshdick/onedark.vim'
+	"}}} ------------------------------
 
-" Improve folding of functions.
-Plugin 'tmhedberg/SimpylFold'
+	""""""""""""""""""""""""""""""""""""
+	""""    `IDE Plugins`           "{{{
+	""""""""""""""""""""""""""""""""""""
+	" Auto check syntax
+	Plugin 'scrooloose/syntastic'
 
-" Autocompletion. Go to github for install docs.
-Plugin 'Valloric/YouCompleteMe'
+	" PEP 8 checking, must have syntastic
+	Plugin 'nvie/vim-flake8'
 
-" Robot python syntax
-Plugin 'mfukar/robotframework-vim'
+	" Improve folding of functions.
+	Plugin 'tmhedberg/SimpylFold'
 
-" golang syntax
-Plugin 'fatih/vim-go'
-"}}} ------------------------------
+	" Autocompletion. Go to github for install docs.
+	Plugin 'Valloric/YouCompleteMe'
 
-""""""""""""""""""""""""""""""""""""
-""""    `Git Integration`       "{{{
-""""""""""""""""""""""""""""""""""""
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-"}}} ------------------------------
+	" Robot python syntax
+	Plugin 'mfukar/robotframework-vim'
 
-""""""""""""""""""""""""""""""""""""
-""""    `Text Wrangling`        "{{{
-""""""""""""""""""""""""""""""""""""
-" Helps with surrounding items in brackets/parthenesis etc.
-" Plugin 'tpope/vim-surround'
-"}}} -------------------------------
+	" golang syntax
+	Plugin 'fatih/vim-go'
+	"}}} ------------------------------
 
-""""""""""""""""""""""""""""""""""""
-""""    `Text Wrangling`        "{{{
-""""""""""""""""""""""""""""""""""""
-" Ctrlp to search
-" Plugin 'kien/ctrlp.vim'
-" Plugin 'scrooloose/nerdtree'
-"}}} -------------------------------
+	""""""""""""""""""""""""""""""""""""
+	""""    `Git Integration`       "{{{
+	""""""""""""""""""""""""""""""""""""
+	Plugin 'tpope/vim-fugitive'
+	Plugin 'airblade/vim-gitgutter'
+	"}}} ------------------------------
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
+	""""""""""""""""""""""""""""""""""""
+	""""    `Text Wrangling`        "{{{
+	""""""""""""""""""""""""""""""""""""
+	" Helps with surrounding items in brackets/parthenesis etc.
+	" Plugin 'tpope/vim-surround'
+	"}}} -------------------------------
+
+	""""""""""""""""""""""""""""""""""""
+	""""    `Text Wrangling`        "{{{
+	""""""""""""""""""""""""""""""""""""
+	" Ctrlp to search
+	" Plugin 'kien/ctrlp.vim'
+	" Plugin 'scrooloose/nerdtree'
+	"}}} -------------------------------
+
+	call vundle#end()
+else
+	echom "Vundle can't be found"
+endif
+filetype plugin indent on
 "}}} ==============================================================
-"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `General Settings`      --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Space is leader key
-set mapleader=" "
+let mapleader=" "
 
 " Turn backup off
 set nobackup
 set nowritebackup
 set noswapfile
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
 
 " Set the number of undos
 set history=100
@@ -116,23 +124,17 @@ set backspace=eol,start,indent
 set hidden
 
 " Disable vim modeline reading (for security).
-set modeline
-set modelines=5
+set nomodeline
 
 " Always use *nix line endings.
 set fileformat=unix
-
-" Show the command in progress at bottom.
-set showcmd
-"}}}
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "-----------    `Defualt Filetype Config`       --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Linebreak on 99 characters
 set linebreak
-set textwidth=80
+set textwidth=79
 set formatoptions=tcrqj1
 
 """"""""""""""""""""
@@ -153,9 +155,6 @@ set ignorecase
 set smartcase
 set incsearch
 
-" Highlight search results
-" set hls
-
 " Toggle highlight
 noremap <silent> <Leader>l :set invhls<cr><C-l>
 "}}} ==============================================================
@@ -164,7 +163,7 @@ noremap <silent> <Leader>l :set invhls<cr><C-l>
 "------------------     `Functions`       --------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Preserves the previous state after running a command
-function! Preserve(command)
+function Preserve(command)
     " Preparation: save last search, and cursor position.
     let _s=@/
     let l = line(".")
@@ -174,6 +173,20 @@ function! Preserve(command)
     " Clean up: restore previous search history, and cursor position
     let @/=_s
     call cursor(l, c)
+endfunction
+
+" Returns true if paste mode is enabled
+function HasPaste()
+    if &paste
+        return 'PASTE MODE '
+    en
+    return ''
+endfunction
+
+function ReturnToLastLocation()
+    if line("'\"") > 0 && line("'\"") <= line("$")
+        exe "normal! g`\""
+    endif
 endfunction
 "}}} ==============================================================
 
@@ -241,104 +254,85 @@ set wrap        " Wrap lines
 syntax enable   " Enable syntax highlighting
 
 " Color setting
-if has('gui_running')
-    "set background=dark
-    "colorscheme solarized
-    "colorscheme Dev_Delight
-    "colorscheme onedark
-    "set background=light
-else
-
-    "set background=dark
-    colorscheme onedark
-    "colorscheme PaperColor
-endif
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
+colorscheme onedark
 
 " Move vertically earlier
 set so=7
 
-"" Add a bit extra margin to the left
-"set foldcolumn=1
-
-"" Set color of the line numbers
-":highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-"}}} ==============================================================
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"------------------     `Status`       ------------------------ {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `Status Line`           "{{{
+""""""""""""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
 
 " Format the status line
 set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ cwd:\ %{getcwd()}\ \ \ %=Buf:\ [%n]\ %l,%c
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE '
-    en
-    return ''
-endfunction
+
+" Show the command in progress at bottom.
+set showcmd
+"}}} -------------------------------
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `Plugin Configs`        --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""
-"""   syntastic         {{{
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `Syntastic`             "{{{
+""""""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
 let g:syntastic_python_python_exec = '/usr/bin/python3'
-" }}} ---------------------
+"}}} -------------------------------
 
-"""""""""""""""""""""""""""
-"""   YouCompleteMe     {{{
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `YouCompleteMe`         "{{{
+""""""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
 let gycm_path_to_python_interpreter = '/usr/bin/python3'
-" }}} ---------------------
+"}}} ------------------------------
 
-"""""""""""""""""""""""""""
-"""   nerdtree          {{{
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `Nerdtree`              "{{{
+""""""""""""""""""""""""""""""""""""
 " Tab to open nerdtree
-" map <Tab> :NERDTreeToggle<CR>
-
+" noremap <Tab> :NERDTreeToggle<CR>
+"
 " Close if nerdtree is last buffer open
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" }}} ---------------------
+"}}} -------------------------------
 
-"""""""""""""""""""""""""""
-"""   ctrlp             {{{
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""        `Ctrl P`            "{{{
+""""""""""""""""""""""""""""""""""""
 " Search through ctags with <,.>
 " nnoremap <leader>c :CtrlPTag<cr>
-" }}} ---------------------
+"}}} ------------------------------
 
-"""""""""""""""""""""""""""
-"""   SimpylFold        {{{
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
+""""    `SimplyFold`            "{{{
+""""""""""""""""""""""""""""""""""""
 set foldlevel=99      " Need to disable automatic folding by SimpylFold
 set foldmethod=syntax " Disable automatic folding
 if has("autocmd")
     au FileType python set foldmethod=indent 
 endif
-" }}} ---------------------
+"}}} -------------------------------
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `Misc`       -------------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "set whichwrap+=<,>",h,l
+"Clear the background
 set t_ut=
 
-function! PlainText()
+"}}} ==============================================================
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"------------------     `Filetypes`       --------------------- {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" The general plain text file setup
+function PlainFilyetypeConfig()
     setlocal spell spelllang=en
     setlocal noexpandtab
     setlocal wrap
@@ -350,55 +344,105 @@ function! PlainText()
     setlocal formatoptions=tcqnr21
     " setlocal formatprg=par
 endfunction
-"}}} ==============================================================
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"------------------     `Filetypes`       --------------------- {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PEP8 Compliant, python config
+function PythonFiletypeConfig()
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=79
+    setl expandtab
+    setl encoding=utf-8
+    let python_highlight_all=1
+endfunction
 
-if has("autocmd")
-    """""         All            """"""
-    " Return to last edit position when opening files
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
-                \ exe "normal! g`\"" |
-                \ endif
+function CUEFIFiletypeConfig()
+endfunction
 
-    """""        Markdown,Text    """"""
-    "au BufNew,BufRead *.md setl =markdown
-    au Filetype markdown,text call PlainText()
-    au FileType markdown setl expandtab
-
-    """""         Make            """"""
-    au FileType make setl noexpandtab "On make files, don't use tab rules
-
-    """""         Python          """"""
-    " PEP8 Compliant ;)
-    au BufNewFile,BufRead *.py setl tabstop=4|
-                \setl softtabstop=4|
-                \setl shiftwidth=4|
-                \setl textwidth=79|
-                \setl expandtab|
-                \setl encoding=utf-8|
-                \let python_highlight_all=1
-
-    " auto remove trailing whitespace on save
-    au BufWritePre *.py :call Preserve("%s/\\s\\+$//e")
-
-    " Don't linebreak in shell scripts.
-    au FileType sh :call PlainText() | set nospell
-
-
-    """""           C             """"""
-    au FileType C, setl tabstop=8 |
-    setl softtabstop=8 |
-    setl shiftwidth=8 |
+function CLinuxFiletypeConfig()
+    setl tabstop=8
+    setl softtabstop=8
+    setl shiftwidth=8
+    setl textwidth=79
     setl noexpandtab
+endfunction
 
+function GolangFiletypeConfig()
+    setl tabstop=8 
+    setl softtabstop=8 
+    setl shiftwidth=8 
+    setl noexpandtab
+endfunction
 
+function BashFiletypeConfig()
+    setl tabstop=4 
+    setl softtabstop=4 
+    setl shiftwidth=4 
+    setl textwidth=0
+    setl noexpandtab
+endfunction
+
+function VimFiletypeConfig()
+    setl foldmethod=marker
+    setl tabstop=4 
+    setl softtabstop=4 
+    setl shiftwidth=4 
+endfunction
+
+""""""""""""""""""""""""""""""""""""
+""""    `Set Filetypes`		"{{{
+""""""""""""""""""""""""""""""""""""
+if has("autocmd")
+
+    " Return to last edit position when opening files
+    au BufReadPost * call ReturnToLastLocation()
+
+    """"""""""""""""""""""""""""""""""""
+    """"    `Markdown, Text`        "{{{
+    """"""""""""""""""""""""""""""""""""
+    au Filetype markdown,text call PlainFilyetypeConfig()
+    au FileType markdown setl expandtab
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"        `Makefile`          "{{{
+    """"""""""""""""""""""""""""""""""""
+    " On make files, don't use tab rules
+    au FileType make setl noexpandtab 
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"        `Python`            "{{{
+    """"""""""""""""""""""""""""""""""""
+    au Filetype python call PythonFiletypeConfig()
+    " autoremove trailing whitespace on save and preserve history
+    au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"            `Bash`          "{{{
+    """"""""""""""""""""""""""""""""""""
+    au FileType sh call BashFiletypeConfig()
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"            `C`             "{{{
+    """"""""""""""""""""""""""""""""""""
+    au FileType C call CLinuxFiletypeConfig()
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"            `VimL`	    "{{{
+    """"""""""""""""""""""""""""""""""""
+    au FileType vim call VimFiletypeConfig()
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"        `Golang`	    "{{{
+    """"""""""""""""""""""""""""""""""""
+    au Filetype go call GolangFiletypeConfig()
     " Source the vimrc file after saving it
     " autocmd bufwritepost .vimrc source $MYVIMRC
-    au BufNewFile,BufEnter go setl tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
-
 endif
+"}}} -------------------------------
 "}}} ==============================================================
-"vim:set foldmethod=marker
