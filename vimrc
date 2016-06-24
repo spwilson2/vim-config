@@ -127,7 +127,7 @@ set hidden
 set nomodeline
 
 " Always use *nix line endings.
-set fileformat=unix
+set fileformats=unix,dos
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -136,6 +136,7 @@ set fileformat=unix
 set linebreak
 set textwidth=79
 set formatoptions=tcrqj1
+set foldmethod=manual
 
 """"""""""""""""""""
 """  => Tabs    """"
@@ -241,6 +242,21 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 " Tab from currrent file dir
 map <leader>et :tabe %%
+
+" Fold manually more easily
+function! NaturalFold()
+    try
+        normal zc
+        echom "Closing fold"
+    catch E490
+        normal zf%
+        echom "Creating fold"
+    endtry
+endfunction
+
+nnoremap <leader>f :call NaturalFold()<CR>
+nnoremap <leader>o zo
+
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -258,6 +274,8 @@ colorscheme onedark
 
 " Move vertically earlier
 set so=7
+
+set foldlevel=99       " Disable automatic folding
 
 """"""""""""""""""""""""""""""""""""
 """"    `Status Line`           "{{{
@@ -309,15 +327,11 @@ let gycm_path_to_python_interpreter = '/usr/bin/python3'
 "}}} ------------------------------
 
 """"""""""""""""""""""""""""""""""""
-""""    `SimplyFold`            "{{{
+""""    `SimpylFold`            "{{{
 """"""""""""""""""""""""""""""""""""
-set foldlevel=99      " Need to disable automatic folding by SimpylFold
-set foldmethod=syntax " Disable automatic folding
-if has("autocmd")
-    augroup Golang
-        au!
-    au FileType python set foldmethod=indent 
-endif
+function! ConfigureSimpylFold()
+    setl foldmethod=expr
+endfunction
 "}}} -------------------------------
 "}}} ==============================================================
 
@@ -356,6 +370,7 @@ function! PythonFiletypeConfig()
     setl expandtab
     setl encoding=utf-8
     let python_highlight_all=1
+    call ConfigureSimpylFold()
 endfunction
 
 function! CUEFIFiletypeConfig()
