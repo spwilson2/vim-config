@@ -42,7 +42,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" Plugin 'NLKNguyen/papercolor-theme'
 
 	" Need to change colors to work well
-	Plugin 'joshdick/onedark.vim'
+	 Plugin 'joshdick/onedark.vim'
 	"}}} ------------------------------
 
 	""""""""""""""""""""""""""""""""""""
@@ -61,10 +61,10 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'Valloric/YouCompleteMe'
 
 	" Robot python syntax
-	Plugin 'mfukar/robotframework-vim'
+	" Plugin 'mfukar/robotframework-vim'
 
 	" golang syntax
-	Plugin 'fatih/vim-go'
+	" Plugin 'fatih/vim-go'
 	"}}} ------------------------------
 
 	""""""""""""""""""""""""""""""""""""
@@ -271,6 +271,7 @@ syntax enable   " Enable syntax highlighting
 
 " Color setting
 colorscheme onedark
+"colorscheme zenburn
 
 " Move vertically earlier
 set so=7
@@ -415,6 +416,8 @@ if has("autocmd")
     augroup Startup
         au!
         au BufReadPost * call ReturnToLastLocation()
+        au BufNewFile,BufRead makefile.inc set filetype=make
+        au BufNewFile,BufRead SConscript,SConstruct set filetype=python
     augroup END
 
     """"""""""""""""""""""""""""""""""""
