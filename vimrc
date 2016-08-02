@@ -1,101 +1,7 @@
 " Vi IMproved
 set nocompatible
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"---------------------     `Vundle`   ------------------------- {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-" Find more plugins here
-" http://vimawesome.com/
-
-""""""""""""""""""""""""""""""""""""
-""""    `Vundle Init`           "{{{
-""""""""""""""""""""""""""""""""""""
-if !empty(glob("~/.vim/bundle/Vundle.vim"))
-	filetype off                  " required
-
-	" set the runtime path to include Vundle and initialize
-	set runtimepath+=~/.vim/bundle/Vundle.vim
-	call vundle#begin()
-
-	" alternatively, pass a path where Vundle should install plugins
-	" call vundle#begin('~/some/path/here')
-	" let Vundle manage Vundle, required
-	Plugin 'VundleVim/Vundle.vim'
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Colorschemes`          "{{{
-	""""""""""""""""""""""""""""""""""""
-	" GUI
-	" Plugin 'altercation/vim-colors-solarized'
-	" Plugin 'sandeepsinghmails/Dev_Delight'
-
-	" XTERM
-	" Plugin 'jnurmine/Zenburn'
-	" Plugin 'NLKNguyen/papercolor-theme'
-
-	" Need to change colors to work well
-	 Plugin 'joshdick/onedark.vim'
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `IDE Plugins`           "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Auto check syntax
-	Plugin 'scrooloose/syntastic'
-
-	" PEP 8 checking, must have syntastic
-	Plugin 'nvie/vim-flake8'
-
-	" Improve folding of functions.
-	Plugin 'tmhedberg/SimpylFold'
-
-	" Autocompletion. Go to github for install docs.
-	Plugin 'Valloric/YouCompleteMe'
-
-	" Robot python syntax
-	" Plugin 'mfukar/robotframework-vim'
-
-	" golang syntax
-	" Plugin 'fatih/vim-go'
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Git Integration`       "{{{
-	""""""""""""""""""""""""""""""""""""
-	Plugin 'tpope/vim-fugitive'
-	Plugin 'airblade/vim-gitgutter'
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Text Wrangling`        "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Helps with surrounding items in brackets/parthenesis etc.
-	" Plugin 'tpope/vim-surround'
-	"}}} -------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Text Wrangling`        "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Ctrlp to search
-	" Plugin 'kien/ctrlp.vim'
-	" Plugin 'scrooloose/nerdtree'
-	"}}} -------------------------------
-
-	call vundle#end()
-else
-	echom "Vundle can't be found"
-endif
 filetype plugin indent on
-"}}} ==============================================================
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `General Settings`      --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -270,7 +176,7 @@ set wrap        " Wrap lines
 syntax enable   " Enable syntax highlighting
 
 " Color setting
-colorscheme onedark
+colorscheme zellner
 "colorscheme zenburn
 
 " Move vertically earlier
@@ -291,51 +197,7 @@ set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ cwd:\ %{getcwd()}\ \ \ %=Buf:\ 
 set showcmd
 "}}} -------------------------------
 "}}} ==============================================================
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"------------------     `Plugin Configs`        --------------- {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""
-""""    `Syntastic`             "{{{
-""""""""""""""""""""""""""""""""""""
-" if python 3 not working. Set the path.
-let g:syntastic_python_python_exec = '/usr/bin/python3'
-"}}} -------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `YouCompleteMe`         "{{{
-""""""""""""""""""""""""""""""""""""
-" if python 3 not working. Set the path.
-let gycm_path_to_python_interpreter = '/usr/bin/python3'
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `Nerdtree`              "{{{
-""""""""""""""""""""""""""""""""""""
-" Tab to open nerdtree
-" noremap <Tab> :NERDTreeToggle<CR>
 "
-" Close if nerdtree is last buffer open
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"}}} -------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""        `Ctrl P`            "{{{
-""""""""""""""""""""""""""""""""""""
-" Search through ctags with <,.>
-" nnoremap <leader>c :CtrlPTag<cr>
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `SimpylFold`            "{{{
-""""""""""""""""""""""""""""""""""""
-function! ConfigureSimpylFold()
-    setl foldmethod=expr
-endfunction
-"}}} -------------------------------
-"}}} ==============================================================
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `Misc`       -------------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

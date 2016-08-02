@@ -9,8 +9,6 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 ln -s "$DIR" "$HOME/.vim"
-ln -s "$DIR"/vimrc "$HOME/.vimrc"
+ln -s "$DIR/vimrc" "$HOME/.vimrc"
 
-git submodule update --init --recursive
 vim -c 'PluginInstall'
-python ~/.vim/bundle/YouCompleteMe/install.py
