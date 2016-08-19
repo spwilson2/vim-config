@@ -63,6 +63,8 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" Robot python syntax
 	" Plugin 'mfukar/robotframework-vim'
 
+    Plugin 'rust-lang/rust.vim'
+
 	" golang syntax
 	" Plugin 'fatih/vim-go'
 	"}}} ------------------------------
@@ -445,6 +447,7 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     augroup Python
         au!
+        au BufNewFile,BufRead SConstruct,SConscript set filetype=python
         au Filetype python call PythonFiletypeConfig()
         " autoremove trailing whitespace on save and preserve history
         au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
@@ -465,7 +468,9 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     augroup C
         au!
-        au FileType C call CLinuxFiletypeConfig()
+        au FileType c,h,cpp call CLinuxFiletypeConfig()
+        " autoremove trailing whitespace on save and preserve history
+        " au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
     augroup END
     "}}} -------------------------------
 
