@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 SOURCE="${BASH_SOURCE[0]}"
 
@@ -17,7 +17,22 @@ set +e
 ln -s "$DIR" "$HOME/.vim"
 ln -s "$DIR/vimrc" "$HOME/.vimrc"
 
+set -e
+
 git pull; git submodule update --init --recursive
 
-#vim +PluginInstall +qall
-#python ~/.vim/bundle/YouCompleteMe/install.py
+vim +PluginInstall +qall
+
+echo "\
+###################################################
+
+Remember to run:
+
+python ~/.vim/bundle/YouCompleteMe/install.py
+
+if you want to install YouCompleteMe! 
+
+Don't forget you'll need to have cmake installed.
+
+###################################################\
+"
