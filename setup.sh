@@ -14,8 +14,8 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 set +e
 
-ln -s "$DIR" "~/.vim"
-ln -s "$DIR/vimrc" "~/.vimrc"
+ln -s "$DIR" "$HOME/.vim"
+ln -s "$DIR/vimrc" "$HOME/.vimrc"
 
 set -e
 
