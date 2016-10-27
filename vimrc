@@ -40,6 +40,8 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" XTERM
 	" Plugin 'jnurmine/Zenburn'
 	" Plugin 'NLKNguyen/papercolor-theme'
+    "Plugin 'sjl/badwolf'
+    Plugin 'morhetz/gruvbox'
 
 	" Need to change colors to work well
 	 Plugin 'joshdick/onedark.vim'
@@ -275,7 +277,12 @@ set wrap        " Wrap lines
 syntax enable   " Enable syntax highlighting
 
 " Color setting
-colorscheme onedark
+"colorscheme onedark
+"colorscheme badwolf
+"
+colorscheme gruvbox
+set background=dark
+
 "colorscheme zenburn
 
 " Move vertically earlier
