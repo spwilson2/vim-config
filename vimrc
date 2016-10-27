@@ -58,7 +58,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'tmhedberg/SimpylFold'
 
 	" Autocompletion. Go to github for install docs.
-	"Plugin 'Valloric/YouCompleteMe'
+	Plugin 'Valloric/YouCompleteMe'
 
 	" Robot python syntax
 	" Plugin 'mfukar/robotframework-vim'
@@ -66,7 +66,18 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
     Plugin 'rust-lang/rust.vim'
 
 	" golang syntax
-	" Plugin 'fatih/vim-go'
+	Plugin 'fatih/vim-go'
+
+	" Ctrlp to search
+	Plugin 'kien/ctrlp.vim'
+
+	Plugin 'scrooloose/nerdtree'
+
+
+	Plugin 'xolox/vim-misc'
+	Plugin 'xolox/vim-easytags'
+    Plugin 'majutsushi/tagbar'
+
 	"}}} ------------------------------
 
 	""""""""""""""""""""""""""""""""""""
@@ -80,15 +91,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	""""    `Text Wrangling`        "{{{
 	""""""""""""""""""""""""""""""""""""
 	" Helps with surrounding items in brackets/parthenesis etc.
-	" Plugin 'tpope/vim-surround'
-	"}}} -------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Text Wrangling`        "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Ctrlp to search
-	" Plugin 'kien/ctrlp.vim'
-	" Plugin 'scrooloose/nerdtree'
+    Plugin 'tpope/vim-surround'
 	"}}} -------------------------------
 
 	call vundle#end()
@@ -303,6 +306,14 @@ set showcmd
 """"""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
 let g:syntastic_python_python_exec = '/usr/bin/python3'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 "}}} -------------------------------
 
 """"""""""""""""""""""""""""""""""""
@@ -316,10 +327,10 @@ let gycm_path_to_python_interpreter = '/usr/bin/python3'
 """"    `Nerdtree`              "{{{
 """"""""""""""""""""""""""""""""""""
 " Tab to open nerdtree
-" noremap <Tab> :NERDTreeToggle<CR>
+noremap <Tab> :NERDTreeToggle<CR>
 "
 " Close if nerdtree is last buffer open
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "}}} -------------------------------
 
 """"""""""""""""""""""""""""""""""""
@@ -327,6 +338,12 @@ let gycm_path_to_python_interpreter = '/usr/bin/python3'
 """"""""""""""""""""""""""""""""""""
 " Search through ctags with <,.>
 " nnoremap <leader>c :CtrlPTag<cr>
+"}}} ------------------------------
+
+""""""""""""""""""""""""""""""""""""
+""""        `Tagbar`            "{{{
+""""""""""""""""""""""""""""""""""""
+nmap <F3> :TagbarToggle<CR>
 "}}} ------------------------------
 
 """"""""""""""""""""""""""""""""""""
