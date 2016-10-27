@@ -58,7 +58,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'tmhedberg/SimpylFold'
 
 	" Autocompletion. Go to github for install docs.
-	Plugin 'Valloric/YouCompleteMe'
+	"Plugin 'Valloric/YouCompleteMe'
 
 	" Robot python syntax
 	" Plugin 'mfukar/robotframework-vim'
@@ -468,7 +468,8 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     augroup C
         au!
-        au FileType c,h,cpp call CLinuxFiletypeConfig()
+        " au FileType c,h,cpp call CLinuxFiletypeConfig()
+        au FileType c,h,cpp call CUEFIFiletypeConfig()
         " autoremove trailing whitespace on save and preserve history
         " au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
     augroup END
