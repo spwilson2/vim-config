@@ -73,7 +73,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" Ctrlp to search
 	Plugin 'kien/ctrlp.vim'
 
-	Plugin 'scrooloose/nerdtree'
+	" Plugin 'scrooloose/nerdtree'
 
 
 	Plugin 'xolox/vim-misc'
@@ -334,10 +334,10 @@ let gycm_path_to_python_interpreter = '/usr/bin/python3'
 """"    `Nerdtree`              "{{{
 """"""""""""""""""""""""""""""""""""
 " Tab to open nerdtree
-noremap <Tab> :NERDTreeToggle<CR>
+"noremap <Tab> :NERDTreeToggle<CR>
 "
 " Close if nerdtree is last buffer open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "}}} -------------------------------
 
 """"""""""""""""""""""""""""""""""""
