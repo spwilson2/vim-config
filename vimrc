@@ -44,7 +44,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
     Plugin 'morhetz/gruvbox'
 
 	" Need to change colors to work well
-	 Plugin 'joshdick/onedark.vim'
+	" Plugin 'joshdick/onedark.vim'
 	"}}} ------------------------------
 
 	""""""""""""""""""""""""""""""""""""
@@ -65,16 +65,19 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" Robot python syntax
 	" Plugin 'mfukar/robotframework-vim'
 
-    Plugin 'rust-lang/rust.vim'
+    " Plugin 'rust-lang/rust.vim'
 
 	" golang syntax
 	Plugin 'fatih/vim-go'
 
 	" Ctrlp to search
-	Plugin 'kien/ctrlp.vim'
+	" Plugin 'kien/ctrlp.vim'
 
 	" Plugin 'scrooloose/nerdtree'
+    Plugin 'vim-scripts/gtags.vim'
 
+    " Generates a YCM config file
+    Plugin 'rdnetto/YCM-Generator'
 
 	Plugin 'xolox/vim-misc'
 	Plugin 'xolox/vim-easytags'
@@ -328,6 +331,11 @@ let g:syntastic_check_on_wq = 0
 """"""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
 let gycm_path_to_python_interpreter = '/usr/bin/python3'
+"let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_global_conf.py'
+
+" Disable to turn off asking about running files.
+let g:ycm_confirm_extra_conf = 1
+
 "}}} ------------------------------
 
 """"""""""""""""""""""""""""""""""""
@@ -359,6 +367,11 @@ nmap <F3> :TagbarToggle<CR>
 function! ConfigureSimpylFold()
     setl foldmethod=expr
 endfunction
+"}}} -------------------------------
+""""""""""""""""""""""""""""""""""""
+""""    `Gtags`                 "{{{
+""""""""""""""""""""""""""""""""""""
+set csprg=gtags-cscope
 "}}} -------------------------------
 "}}} ==============================================================
 
