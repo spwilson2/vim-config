@@ -75,6 +75,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 
 	" Plugin 'scrooloose/nerdtree'
     Plugin 'vim-scripts/gtags.vim'
+    Plugin 'spwilson2/cscope_maps'
 
     " Generates a YCM config file
     Plugin 'rdnetto/YCM-Generator'
@@ -111,6 +112,7 @@ filetype plugin indent on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Space is leader key
 let mapleader=" "
+set timeoutlen=400
 
 " Turn backup off
 set nobackup
@@ -505,10 +507,11 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     augroup C
         au!
-        " au FileType c,h,cpp call CLinuxFiletypeConfig()
-        au FileType c,h,cpp call CUEFIFiletypeConfig()
+        au FileType c,h,cpp call CLinuxFiletypeConfig()
+        " au FileType c,h,cpp call CUEFIFiletypeConfig()
         " autoremove trailing whitespace on save and preserve history
-        " au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
+        au BufWritePre *.c,h,cpp call Preserve("%s/\\s\\+$//e")
+        setl formatoptions+=t
     augroup END
     "}}} -------------------------------
 
