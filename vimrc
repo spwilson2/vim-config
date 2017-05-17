@@ -383,6 +383,8 @@ set csprg=gtags-cscope
 "set whichwrap+=<,>",h,l
 "Clear the background
 set t_ut=
+" Keep searching down until home or found tags.
+set tags=./tags;$HOME,tags;
 
 "}}} ==============================================================
 
@@ -505,6 +507,15 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     """"            `C`             "{{{
     """"""""""""""""""""""""""""""""""""
+    function! LoadCscope()
+        let db = findfile("GTAGS", ".;")
+        if (!empty(db))
+            let path = strpart(db, 0, match(db, "/GTAGS$"))
+            set nocscopeverbose " suppress 'duplicate connection' error
+            exe "cs add " . db . " " . path
+            set cscopeverbose
+        endif
+    endfunction
     augroup C
         au!
         au FileType c,h,cpp call CLinuxFiletypeConfig()
@@ -512,6 +523,9 @@ if has("autocmd")
         " autoremove trailing whitespace on save and preserve history
         au BufWritePre *.c,h,cpp call Preserve("%s/\\s\\+$//e")
         setl formatoptions+=t
+
+        " Automatically try and load gtags for these projects.
+        au FileType c,h,cpp call AutoAddTags()
     augroup END
     "}}} -------------------------------
 
