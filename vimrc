@@ -205,6 +205,43 @@ function! ReturnToLastLocation()
         exe "normal! g`\""
     endif
 endfunction
+
+function! AutoAddGTags()
+    let cmd = "cd " . expand('%:h') . " && global -pq"
+    let l:CSCOPE_DB = system(cmd)[:-2]
+    silent echo 'Automatically loaded tags file: ' . l:CSCOPE_DB . "/GTAGS"
+    if l:CSCOPE_DB != ''
+        execute 'cs add '. l:CSCOPE_DB . "/GTAGS"
+    endif
+endfunction
+
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  endif
+endfunction
+au BufEnter /* call LoadCscope()
+
+function! ConfigureGtags()
+    set csprg=gtags-cscope
+    set nocscopeverbose  
+    " add any GTAGS database in current directory
+    if filereadable("GTAGS")
+        cs add GTAGS
+    else
+        call AutoAddGTags()
+    endif
+endfunction
+
+" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+set cscopetag
+" check cscope for definition of a symbol before checking ctags
+set csto=0
+
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -377,7 +414,7 @@ endfunction
 """"""""""""""""""""""""""""""""""""
 """"    `Gtags`                 "{{{
 """"""""""""""""""""""""""""""""""""
-set csprg=gtags-cscope
+"set csprg=gtags-cscope
 "}}} -------------------------------
 "}}} ==============================================================
 
@@ -454,6 +491,10 @@ function! VimFiletypeConfig()
     setl shiftwidth=4 
 endfunction
 
+function! AdaFiletypeConfig()
+    call LoadCscope()
+endfunction
+
 """"""""""""""""""""""""""""""""""""
 """"    `Set Filetypes`		"{{{
 """"""""""""""""""""""""""""""""""""
@@ -511,15 +552,6 @@ if has("autocmd")
     """"""""""""""""""""""""""""""""""""
     """"            `C`             "{{{
     """"""""""""""""""""""""""""""""""""
-    function! LoadCscope()
-        let db = findfile("GTAGS", ".;")
-        if (!empty(db))
-            let path = strpart(db, 0, match(db, "/GTAGS$"))
-            set nocscopeverbose " suppress 'duplicate connection' error
-            exe "cs add " . db . " " . path
-            set cscopeverbose
-        endif
-    endfunction
     augroup C
         au!
         au FileType c,h,cpp call CLinuxFiletypeConfig()
@@ -529,7 +561,7 @@ if has("autocmd")
         setl formatoptions+=t
 
         " Automatically try and load gtags for these projects.
-        au FileType c,h,cpp call AutoAddGTags()
+        au FileType c,h,cpp call ConfigureGtags()
     augroup END
     "}}} -------------------------------
 
@@ -549,6 +581,16 @@ if has("autocmd")
         au!
         au Filetype go call GolangFiletypeConfig()
     augroup END
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"        `Ada`	            "{{{
+    """"""""""""""""""""""""""""""""""""
+    augroup Ada
+        au!
+        au Filetype ada call AdaFiletypeConfig()
+    augroup END
+    "}}} -------------------------------
 
     " Source the vimrc file after saving it
     augroup Vimrc
