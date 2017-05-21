@@ -40,7 +40,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" XTERM
 	" Plugin 'jnurmine/Zenburn'
 	" Plugin 'NLKNguyen/papercolor-theme'
-    "Plugin 'sjl/badwolf'
+    " Plugin 'sjl/badwolf'
     Plugin 'morhetz/gruvbox'
 
 	" Need to change colors to work well
@@ -62,26 +62,23 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	" Autocompletion. Go to github for install docs.
 	Plugin 'Valloric/YouCompleteMe'
 
+    " Generates a YCM config file
+    Plugin 'rdnetto/YCM-Generator'
+
 	" Robot python syntax
 	" Plugin 'mfukar/robotframework-vim'
-
     " Plugin 'rust-lang/rust.vim'
-
 	" golang syntax
 	Plugin 'fatih/vim-go'
-
-	" Ctrlp to search
-	" Plugin 'kien/ctrlp.vim'
 
 	" Plugin 'scrooloose/nerdtree'
     Plugin 'vim-scripts/gtags.vim'
     Plugin 'spwilson2/cscope_maps'
 
-    " Generates a YCM config file
-    Plugin 'rdnetto/YCM-Generator'
+    " Useful if go to ctags, but doesn't work for global.
+	" Plugin 'xolox/vim-misc'
+	" Plugin 'xolox/vim-easytags'
 
-	Plugin 'xolox/vim-misc'
-	Plugin 'xolox/vim-easytags'
     Plugin 'majutsushi/tagbar'
 
 	"}}} ------------------------------
@@ -89,7 +86,14 @@ if !empty(glob("~/.vim/bundle/Vundle.vim"))
 	""""""""""""""""""""""""""""""""""""
 	""""    `Git Integration`       "{{{
 	""""""""""""""""""""""""""""""""""""
+    " Most notable additions it brings:
+    " :Gdiff bring up working diff with staged file
+    " :Gstatus press - to add/reset p to add --interactive
 	Plugin 'tpope/vim-fugitive'
+
+    " Most notable additions it brings:
+    " ]c or [c go to next/prev hunk
+    " <operator>ic perform action on current hunk
 	Plugin 'airblade/vim-gitgutter'
 	"}}} ------------------------------
 
@@ -525,7 +529,7 @@ if has("autocmd")
         setl formatoptions+=t
 
         " Automatically try and load gtags for these projects.
-        au FileType c,h,cpp call AutoAddTags()
+        au FileType c,h,cpp call AutoAddGTags()
     augroup END
     "}}} -------------------------------
 
