@@ -1,114 +1,79 @@
 " Vi IMproved
 set nocompatible
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"---------------------     `Vundle`   ------------------------- {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-" Find more plugins here
-" http://vimawesome.com/
+if !empty(glob("~/.vim/autoload/plug.vim"))
+
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Colorscheme "
+Plug 'morhetz/gruvbox'
+Plug 'jnurmine/Zenburn'
+Plug 'joshdick/onedark.vim'
+" Plug 'sjl/badwolf'
 
 """"""""""""""""""""""""""""""""""""
-""""    `Vundle Init`           "{{{
+""""    `IDE Plugs`           "{{{
 """"""""""""""""""""""""""""""""""""
-if !empty(glob("~/.vim/bundle/Vundle.vim"))
-	filetype off                  " required
+" Auto check syntax
+Plug 'scrooloose/syntastic'
+" PEP 8 checking, must have syntastic
+Plug 'nvie/vim-flake8'
+" Improve folding of functions.
+Plug 'tmhedberg/SimpylFold'
+" Autocompletion simplified. 
+" Go to github for install docs, otherwise will default install for python.
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Generates a YCM config file
+Plug 'rdnetto/YCM-Generator'
+" Rust
+" Plug 'rust-lang/rust.vim'
+" Golang
+Plug 'fatih/vim-go'
 
-	" set the runtime path to include Vundle and initialize
-	set runtimepath+=~/.vim/bundle/Vundle.vim
-	call vundle#begin()
+" Plug 'scrooloose/nerdtree'
+" Plug 'vim-scripts/gtags.vim'
+Plug 'spwilson2/cscope_maps'
 
-	" alternatively, pass a path where Vundle should install plugins
-	" call vundle#begin('~/some/path/here')
-	" let Vundle manage Vundle, required
-	Plugin 'VundleVim/Vundle.vim'
-	"}}} ------------------------------
+" Useful if go to ctags, but doesn't work for global.
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-easytags'
 
-	""""""""""""""""""""""""""""""""""""
-	""""    `Colorschemes`          "{{{
-	""""""""""""""""""""""""""""""""""""
-	" GUI
-	" Plugin 'altercation/vim-colors-solarized'
-	" Plugin 'sandeepsinghmails/Dev_Delight'
+" Display tags on the edge of the screen
+Plug 'majutsushi/tagbar'
 
-	" XTERM
-	" Plugin 'jnurmine/Zenburn'
-	" Plugin 'NLKNguyen/papercolor-theme'
-    " Plugin 'sjl/badwolf'
-    Plugin 'morhetz/gruvbox'
+" Fuzzy Finder for files and sources
+Plug 'kien/ctrlp.vim'
 
-	" Need to change colors to work well
-	" Plugin 'joshdick/onedark.vim'
-	"}}} ------------------------------
+""""""""""""""""""""""""""""""""""""
+""""    `Git Integration`       "{{{
+""""""""""""""""""""""""""""""""""""
+  " Most notable additions it brings:
+  " :Gdiff bring up working diff with staged file
+  " :Gstatus press - to add/reset p to add --interactive
+Plug 'tpope/vim-fugitive'
 
-	""""""""""""""""""""""""""""""""""""
-	""""    `IDE Plugins`           "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Auto check syntax
-	Plugin 'scrooloose/syntastic'
+  " Most notable additions it brings:
+  " ]c or [c go to next/prev hunk
+  " <operator>ic perform action on current hunk
+Plug 'airblade/vim-gitgutter'
+"}}} ------------------------------
 
-	" PEP 8 checking, must have syntastic
-	Plugin 'nvie/vim-flake8'
+""""""""""""""""""""""""""""""""""""
+""""    `Text Wrangling`        "{{{
+""""""""""""""""""""""""""""""""""""
+" Helps with surrounding items in brackets/parthenesis etc.
+Plug 'tpope/vim-surround'
+"}}} -------------------------------
 
-	" Improve folding of functions.
-	Plugin 'tmhedberg/SimpylFold'
 
-	" Autocompletion. Go to github for install docs.
-	Plugin 'Valloric/YouCompleteMe'
-
-    " Generates a YCM config file
-    Plugin 'rdnetto/YCM-Generator'
-
-	" Robot python syntax
-	" Plugin 'mfukar/robotframework-vim'
-    " Plugin 'rust-lang/rust.vim'
-	" golang syntax
-	Plugin 'fatih/vim-go'
-
-	" Plugin 'scrooloose/nerdtree'
-    Plugin 'vim-scripts/gtags.vim'
-    Plugin 'spwilson2/cscope_maps'
-
-    " Useful if go to ctags, but doesn't work for global.
-	" Plugin 'xolox/vim-misc'
-	" Plugin 'xolox/vim-easytags'
-
-    Plugin 'majutsushi/tagbar'
-
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Git Integration`       "{{{
-	""""""""""""""""""""""""""""""""""""
-    " Most notable additions it brings:
-    " :Gdiff bring up working diff with staged file
-    " :Gstatus press - to add/reset p to add --interactive
-	Plugin 'tpope/vim-fugitive'
-
-    " Most notable additions it brings:
-    " ]c or [c go to next/prev hunk
-    " <operator>ic perform action on current hunk
-	Plugin 'airblade/vim-gitgutter'
-	"}}} ------------------------------
-
-	""""""""""""""""""""""""""""""""""""
-	""""    `Text Wrangling`        "{{{
-	""""""""""""""""""""""""""""""""""""
-	" Helps with surrounding items in brackets/parthenesis etc.
-    Plugin 'tpope/vim-surround'
-	"}}} -------------------------------
-
-	call vundle#end()
+" Initialize plugin system
+call plug#end()
 else
-	echom "Vundle can't be found"
+	echom "Plugged can't be found"
 endif
-filetype plugin indent on
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -142,8 +107,18 @@ set hidden
 " Disable vim modeline reading (for security).
 set nomodeline
 
+" Use a matching menu for selecting files.
+set wildmenu
+
 " Always use *nix line endings.
 set fileformats=unix,dos
+
+" Move vertically earlier
+set so=7
+
+" Disable automatic folding
+set foldlevel=99
+
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -154,15 +129,16 @@ set textwidth=79
 set formatoptions=tcrqj1
 set foldmethod=manual
 
-""""""""""""""""""""
-"""  => Tabs    """"
-""""""""""""""""""""
-set shiftwidth=4   " Width for > and < vcmds
+""""""""""""""""""""""""
+"""  => Indentation """"
+""""""""""""""""""""""""
+set shiftwidth=4   " Width for > and < cmds
 set tabstop=4      " Visual length of tabs
 set softtabstop=4  " Length to use spaces at instead of tabs
 set expandtab      " Use spaces instead of tabs
 set smarttab       " Tab to previous set lines
 set autoindent     " Auto indent following lines
+set cinoptions=(0  " Params in parenthesis are same indentation.
 
 """"""""""""""""""""
 """  Searches   """"
@@ -190,6 +166,14 @@ function! Preserve(command)
     " Clean up: restore previous search history, and cursor position
     let @/=_s
     call cursor(l, c)
+endfunction
+
+" Add cleanup on save to a buffer.
+function! AddCleanupOnSave()
+    augroup CleanupWhitespace
+        au!
+        au BufWritePre <buffer> call Preserve("%s/\\s\\+$//e")
+    augroup END
 endfunction
 
 " Returns true if paste mode is enabled
@@ -237,6 +221,11 @@ function! ConfigureGtags()
     endif
 endfunction
 
+function! ToggleSidebar()
+    set invnumber
+    GitGutterToggle
+endfunction
+
 " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
 set cscopetag
 " check cscope for definition of a symbol before checking ctags
@@ -272,7 +261,7 @@ nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 
 " Toggle linenumbers.
-nnoremap <C-N> :set invnumber<CR>
+nnoremap <C-N> :call ToggleSidebar()<CR>
 
 nnoremap <Leader>sc :set invspell<CR>
 
@@ -320,31 +309,28 @@ set number      " Show line numbers
 set ruler       " Always show ruler
 set wrap        " Wrap lines
 
+set display=lastline
+
+
 syntax enable   " Enable syntax highlighting
 
 " Color setting
-"colorscheme onedark
+colorscheme onedark
 "colorscheme badwolf
-"
-colorscheme gruvbox
+"colorscheme gruvbox
 set background=dark
-
 "colorscheme zenburn
 
-" Move vertically earlier
-set so=7
-
-set foldlevel=99       " Disable automatic folding
+" Set the background color for listchars trail
+hi SpecialKey guibg=red ctermbg=red
 
 """"""""""""""""""""""""""""""""""""
 """"    `Status Line`           "{{{
 """"""""""""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
-
 " Format the status line
-set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ cwd:\ %{getcwd()}\ \ \ %=Buf:\ [%n]\ %l,%c
-
+set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
 " Show the command in progress at bottom.
 set showcmd
 "}}} -------------------------------
@@ -358,13 +344,11 @@ set showcmd
 """"    `Syntastic`             "{{{
 """"""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
-let g:syntastic_python_python_exec = '/usr/bin/python3'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
+"let g:syntastic_python_python_exec = '/usr/bin/python3'
 "let g:syntastic_always_populate_loc_list = 1
 "let g:syntastic_auto_loc_list = 1
+" Show all errors, don't stop on first error checker.
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "}}} -------------------------------
@@ -373,11 +357,11 @@ let g:syntastic_check_on_wq = 0
 """"    `YouCompleteMe`         "{{{
 """"""""""""""""""""""""""""""""""""
 " if python 3 not working. Set the path.
-let gycm_path_to_python_interpreter = '/usr/bin/python3'
+"let gycm_path_to_python_interpreter = '/usr/bin/python3'
 "let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_global_conf.py'
 
 " Disable to turn off asking about running files.
-let g:ycm_confirm_extra_conf = 1
+" let g:ycm_confirm_extra_conf = 1
 
 "}}} ------------------------------
 
@@ -480,8 +464,8 @@ function! BashFiletypeConfig()
     setl tabstop=4 
     setl softtabstop=4 
     setl shiftwidth=4 
-    setl textwidth=0
-    setl noexpandtab
+    setl textwidth=79
+    setl expandtab
 endfunction
 
 function! VimFiletypeConfig()
@@ -495,11 +479,59 @@ function! AdaFiletypeConfig()
     call LoadCscope()
 endfunction
 
+function! MakeFiletypConfig()
+endfunction
+
+""""""""""""""""""""""""""""""""""""
+""""    `Gem5 Configuration`	   "
+""""""""""""""""""""""""""""""""""""
+function! Gem5CCFiletypeConfig()
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=79
+    setl linebreak
+    setl cinoptions=(0,g.5s,h.5s
+    setl expandtab
+    setl formatoptions=crqnj12t
+    " Highlight trailing spaces. 
+    setl list
+    setl listchars=trail:\ 
+endfunction
+function! Gem5PythonFiletypeConfig()
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=79
+    setl linebreak
+    setl expandtab
+    setl cinoptions=(0,g.5s,h.5s
+    setl formatoptions=crqnj12t
+    " Highlight trailing spaces. 
+    setl list
+    setl listchars=trail:\ 
+endfunction
+
+function! TryGem5FiletypeConfig(filetype)
+    if matchstr(expand('%:p'), '*/gem5/*') == -1
+        return
+    elseif a:filetype == 'CC'
+        call Gem5CCFiletypeConfig()
+    elseif a:filetype == 'Python'
+        call Gem5PythonFiletypeConfig()
+    endif
+endfunction
+
+function! Gem5FiletypeOverrides()
+    let l:ext = expand('%:e')
+    if l:ext == "c" || l:ext == "hh" || l:ext == "cc"
+    endif
+endfunction
+
 """"""""""""""""""""""""""""""""""""
 """"    `Set Filetypes`		"{{{
 """"""""""""""""""""""""""""""""""""
-if has("autocmd")
-
+function! SetupDefaultFiletypes()
     " Return to last edit position when opening files
     augroup Startup
         au!
@@ -524,7 +556,7 @@ if has("autocmd")
     " On make files, don't use tab rules
     augroup Makefile
         au!
-        au FileType make setl noexpandtab 
+        au FileType make MakeFiletypeConfig()
     augroup END
     "}}} -------------------------------
 
@@ -535,8 +567,10 @@ if has("autocmd")
         au!
         au BufNewFile,BufRead SConstruct,SConscript set filetype=python
         au Filetype python call PythonFiletypeConfig()
-        " autoremove trailing whitespace on save and preserve history
-        au BufWritePre *.py call Preserve("%s/\\s\\+$//e")
+        au FileType python call TryGem5FiletypeConfig('Python')
+
+        " Add automatic cleaning of whitespace to buffer saves.
+        au Filetype python call AddCleanupOnSave()
     augroup END
     "}}} -------------------------------
 
@@ -550,15 +584,16 @@ if has("autocmd")
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
-    """"            `C`             "{{{
+    """"            `CC`             "{{{
     """"""""""""""""""""""""""""""""""""
-    augroup C
+    augroup CC
         au!
         au FileType c,h,cpp call CLinuxFiletypeConfig()
-        " au FileType c,h,cpp call CUEFIFiletypeConfig()
-        " autoremove trailing whitespace on save and preserve history
-        au BufWritePre *.c,h,cpp call Preserve("%s/\\s\\+$//e")
-        setl formatoptions+=t
+        " Add the CC hook for gem5.
+        au FileType c,h,cpp call TryGem5FiletypeConfig('CC')
+
+        " Add automatic cleaning of whitespace to buffer saves.
+        au FileType c,h,cpp call AddCleanupOnSave()
 
         " Automatically try and load gtags for these projects.
         au FileType c,h,cpp call ConfigureGtags()
@@ -592,11 +627,17 @@ if has("autocmd")
     augroup END
     "}}} -------------------------------
 
+    """"""""""""""""""""""""""""""""""""
+    """"        `vimrc`	            "{{{
+    """"""""""""""""""""""""""""""""""""
     " Source the vimrc file after saving it
     augroup Vimrc
         au!
         autocmd bufwritepost .vimrc source $MYVIMRC
     augroup END
-endif
+endfunction
+
+" Set up all the autogroups.
+call SetupDefaultFiletypes()
 "}}} -------------------------------
 "}}} ==============================================================
