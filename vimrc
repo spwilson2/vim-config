@@ -1,81 +1,6 @@
 " Vi IMproved
 set nocompatible
 
-if !empty(glob("~/.vim/autoload/plug.vim"))
-
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
-
-" Colorscheme "
-Plug 'morhetz/gruvbox'
-Plug 'jnurmine/Zenburn'
-Plug 'joshdick/onedark.vim'
-" Plug 'sjl/badwolf'
-
-""""""""""""""""""""""""""""""""""""
-""""    `IDE Plugs`           "{{{
-""""""""""""""""""""""""""""""""""""
-" Auto check syntax
-Plug 'scrooloose/syntastic'
-" PEP 8 checking, must have syntastic
-Plug 'nvie/vim-flake8'
-" Improve folding of functions.
-Plug 'tmhedberg/SimpylFold'
-" Autocompletion simplified. 
-" Go to github for install docs, otherwise will default install for python.
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Generates a YCM config file
-Plug 'rdnetto/YCM-Generator'
-" Rust
-" Plug 'rust-lang/rust.vim'
-" Golang
-Plug 'fatih/vim-go'
-
-" Plug 'scrooloose/nerdtree'
-" Plug 'vim-scripts/gtags.vim'
-Plug 'spwilson2/cscope_maps'
-
-" Useful if go to ctags, but doesn't work for global.
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-easytags'
-
-" Display tags on the edge of the screen
-Plug 'majutsushi/tagbar'
-
-" Fuzzy Finder for files and sources
-Plug 'kien/ctrlp.vim'
-
-""""""""""""""""""""""""""""""""""""
-""""    `Git Integration`       "{{{
-""""""""""""""""""""""""""""""""""""
-  " Most notable additions it brings:
-  " :Gdiff bring up working diff with staged file
-  " :Gstatus press - to add/reset p to add --interactive
-Plug 'tpope/vim-fugitive'
-
-  " Most notable additions it brings:
-  " ]c or [c go to next/prev hunk
-  " <operator>ic perform action on current hunk
-Plug 'airblade/vim-gitgutter'
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `Text Wrangling`        "{{{
-""""""""""""""""""""""""""""""""""""
-" Helps with surrounding items in brackets/parthenesis etc.
-Plug 'tpope/vim-surround'
-"}}} -------------------------------
-
-
-" Initialize plugin system
-call plug#end()
-else
-	echom "Plugged can't be found"
-endif
-"}}} ==============================================================
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "------------------     `General Settings`      --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -315,11 +240,8 @@ set display=lastline
 syntax enable   " Enable syntax highlighting
 
 " Color setting
-colorscheme onedark
-"colorscheme badwolf
-"colorscheme gruvbox
+colorscheme murphy
 set background=dark
-"colorscheme zenburn
 
 " Set the background color for listchars trail
 hi SpecialKey guibg=red ctermbg=red
@@ -330,75 +252,9 @@ hi SpecialKey guibg=red ctermbg=red
 " Always show the status line
 set laststatus=2
 " Format the status line
-set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
+set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %=Buf:\ [%n]\ %l,%c
 " Show the command in progress at bottom.
 set showcmd
-"}}} -------------------------------
-"}}} ==============================================================
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"------------------     `Plugin Configs`        --------------- {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""
-""""    `Syntastic`             "{{{
-""""""""""""""""""""""""""""""""""""
-" if python 3 not working. Set the path.
-"let g:syntastic_python_python_exec = '/usr/bin/python3'
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-" Show all errors, don't stop on first error checker.
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-"}}} -------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `YouCompleteMe`         "{{{
-""""""""""""""""""""""""""""""""""""
-" if python 3 not working. Set the path.
-"let gycm_path_to_python_interpreter = '/usr/bin/python3'
-"let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_global_conf.py'
-
-" Disable to turn off asking about running files.
-" let g:ycm_confirm_extra_conf = 1
-
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `Nerdtree`              "{{{
-""""""""""""""""""""""""""""""""""""
-" Tab to open nerdtree
-"noremap <Tab> :NERDTreeToggle<CR>
-"
-" Close if nerdtree is last buffer open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"}}} -------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""        `Ctrl P`            "{{{
-""""""""""""""""""""""""""""""""""""
-" Search through ctags with <,.>
-" nnoremap <leader>c :CtrlPTag<cr>
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""        `Tagbar`            "{{{
-""""""""""""""""""""""""""""""""""""
-nmap <F3> :TagbarToggle<CR>
-"}}} ------------------------------
-
-""""""""""""""""""""""""""""""""""""
-""""    `SimpylFold`            "{{{
-""""""""""""""""""""""""""""""""""""
-function! ConfigureSimpylFold()
-    setl foldmethod=expr
-endfunction
-"}}} -------------------------------
-""""""""""""""""""""""""""""""""""""
-""""    `Gtags`                 "{{{
-""""""""""""""""""""""""""""""""""""
-"set csprg=gtags-cscope
 "}}} -------------------------------
 "}}} ==============================================================
 
@@ -439,7 +295,6 @@ function! PythonFiletypeConfig()
     setl expandtab
     setl encoding=utf-8
     let python_highlight_all=1
-    call ConfigureSimpylFold()
 endfunction
 
 function! CUEFIFiletypeConfig()
