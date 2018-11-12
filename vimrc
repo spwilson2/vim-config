@@ -9,9 +9,10 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
 call plug#begin('~/.vim/plugged')
 
 " Colorscheme "
-Plug 'morhetz/gruvbox'
-Plug 'jnurmine/Zenburn'
+"Plug 'morhetz/gruvbox'
+"Plug 'jnurmine/Zenburn'
 Plug 'joshdick/onedark.vim'
+Plug 'chrisbra/csv.vim'
 " Plug 'sjl/badwolf'
 
 """"""""""""""""""""""""""""""""""""
@@ -23,11 +24,11 @@ Plug 'scrooloose/syntastic'
 Plug 'nvie/vim-flake8'
 " Improve folding of functions.
 Plug 'tmhedberg/SimpylFold'
-" Autocompletion simplified. 
+" Autocompletion simplified.
 " Go to github for install docs, otherwise will default install for python.
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " Generates a YCM config file
-Plug 'rdnetto/YCM-Generator'
+"Plug 'rdnetto/YCM-Generator'
 " Rust
 " Plug 'rust-lang/rust.vim'
 " Golang
@@ -42,10 +43,10 @@ Plug 'spwilson2/cscope_maps'
 " Plug 'xolox/vim-easytags'
 
 " Display tags on the edge of the screen
-Plug 'majutsushi/tagbar'
+"Plug 'majutsushi/tagbar'
 
 " Fuzzy Finder for files and sources
-Plug 'kien/ctrlp.vim'
+" Plug 'kien/ctrlp.vim'
 
 """"""""""""""""""""""""""""""""""""
 """"    `Git Integration`       "{{{
@@ -53,12 +54,12 @@ Plug 'kien/ctrlp.vim'
   " Most notable additions it brings:
   " :Gdiff bring up working diff with staged file
   " :Gstatus press - to add/reset p to add --interactive
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 
   " Most notable additions it brings:
   " ]c or [c go to next/prev hunk
   " <operator>ic perform action on current hunk
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
 "}}} ------------------------------
 
 """"""""""""""""""""""""""""""""""""
@@ -119,13 +120,17 @@ set so=7
 " Disable automatic folding
 set foldlevel=99
 
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+
+set sessionoptions=curdir,folds,help,tabpages,winsize
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "-----------    `Defualt Filetype Config`       --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set linebreak
-set textwidth=79
+set textwidth=0
 set formatoptions=tcrqj1
 set foldmethod=manual
 
@@ -133,7 +138,7 @@ set foldmethod=manual
 """  => Indentation """"
 """"""""""""""""""""""""
 set shiftwidth=4   " Width for > and < cmds
-set tabstop=4      " Visual length of tabs
+set tabstop=8      " Visual length of tabs
 set softtabstop=4  " Length to use spaces at instead of tabs
 set expandtab      " Use spaces instead of tabs
 set smarttab       " Tab to previous set lines
@@ -147,9 +152,6 @@ set cinoptions=(0  " Params in parenthesis are same indentation.
 set ignorecase
 set smartcase
 set incsearch
-
-" Toggle highlight
-noremap <silent> <Leader>l :set invhls<cr><C-l>
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -168,11 +170,21 @@ function! Preserve(command)
     call cursor(l, c)
 endfunction
 
+function! BufClose()
+    sbprevious
+    wprevious
+    bdelete
+endfunction
+
+function! CleanUpWhitespace()
+    call Preserve("%s/\\s\\+$//e")
+endfunction
+
 " Add cleanup on save to a buffer.
 function! AddCleanupOnSave()
     augroup CleanupWhitespace
         au!
-        au BufWritePre <buffer> call Preserve("%s/\\s\\+$//e")
+        au BufWritePre <buffer> call CleanUpWhitespace()
     augroup END
 endfunction
 
@@ -211,25 +223,58 @@ endfunction
 au BufEnter /* call LoadCscope()
 
 function! ConfigureGtags()
-    set csprg=gtags-cscope
-    set nocscopeverbose  
     " add any GTAGS database in current directory
     if filereadable("GTAGS")
         cs add GTAGS
-    else
+        set csprg=gtags-cscope
+        set nocscopeverbose
         call AutoAddGTags()
+    else
+        call LoadCscope()
     endif
 endfunction
 
 function! ToggleSidebar()
     set invnumber
-    GitGutterToggle
+    "GitGutterToggle
 endfunction
 
-" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-set cscopetag
-" check cscope for definition of a symbol before checking ctags
-set csto=0
+" Fold manually more easily
+function! NaturalFold()
+    try
+        normal zc
+        echom "Closing fold"
+    catch E490
+        normal zf%
+        echom "Creating fold"
+    endtry
+endfunction
+
+function! OpenLog()
+    let l:log = g:logdir . "/log.rst"
+    execute '!~/projects/productivity/log.py' l:log
+    execute 'tabe' l:log
+endfunction
+
+function! InsertDateHeading()
+    read !date +\%Y-\%m-\%d
+    read !echo "=========="
+endfunction
+
+" Initialization which needs to take place a little time in the future so other
+" plugins don't override.
+function! PostInitSetup(timer)
+    " Insert tab, YCM overrides the hotkey
+    inoremap <S-Tab> <C-V><Tab>
+endfunction
+
+let _timer = timer_start(50, 'PostInitSetup', {})
+
+let g:logdir = "~/Documents/logs"
+
+command! CleanWhitespace call CleanUpWhitespace()
+command! Log call OpenLog()
+command! AddDate call InsertDateHeading()
 
 "}}} ==============================================================
 
@@ -242,11 +287,23 @@ set pastetoggle=<F2>
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy
 nnoremap Y y$
 
+" Quick quit
+nnoremap <C-Q> :bd<CR>
+" Delete buffer without closing the window
+nnoremap <C-X> :b#<bar>bd#<CR>
+
 " Manually regen ctags
 nnoremap <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 
+" Toggle highlight
+noremap <silent> <Leader>l :setl invhls<cr><C-l>
+
+" Toggle listchars
+nnoremap <Leader>h :set invlist<CR>
+
 " Toggle Spell Check.
-nnoremap <Leader>sc :set invspell<CR>
+nnoremap <Leader>sc :setl invspell<CR>
+
 
 " Split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -262,8 +319,6 @@ nnoremap <silent> ]B :blast<CR>
 
 " Toggle linenumbers.
 nnoremap <C-N> :call ToggleSidebar()<CR>
-
-nnoremap <Leader>sc :set invspell<CR>
 
 " Remove the Windows ^M
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -285,17 +340,6 @@ map <leader>ev :vsp %%
 " Tab from currrent file dir
 map <leader>et :tabe %%
 
-" Fold manually more easily
-function! NaturalFold()
-    try
-        normal zc
-        echom "Closing fold"
-    catch E490
-        normal zf%
-        echom "Creating fold"
-    endtry
-endfunction
-
 nnoremap <leader>f :call NaturalFold()<CR>
 nnoremap <leader>o zo
 
@@ -311,6 +355,12 @@ set wrap        " Wrap lines
 
 set display=lastline
 
+" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+set cscopetag
+" check cscope for definition of a symbol before checking ctags
+set csto=0
+" Set vim yanks to clipboard
+set clipboard=unnamedplus
 
 syntax enable   " Enable syntax highlighting
 
@@ -321,8 +371,10 @@ colorscheme onedark
 set background=dark
 "colorscheme zenburn
 
-" Set the background color for listchars trail
-hi SpecialKey guibg=red ctermbg=red
+" Set the color for listchars
+hi SpecialKey guifg=red ctermfg=red
+set listchars=tab:»·,trail:·
+set list
 
 """"""""""""""""""""""""""""""""""""
 """"    `Status Line`           "{{{
@@ -340,6 +392,10 @@ set showcmd
 "------------------     `Plugin Configs`        --------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""
+""""    `vim-go`                "{{{
+""""""""""""""""""""""""""""""""""""
+let g:go_version_warning = 0
 """"""""""""""""""""""""""""""""""""
 """"    `Syntastic`             "{{{
 """"""""""""""""""""""""""""""""""""
@@ -380,6 +436,7 @@ let g:syntastic_check_on_wq = 0
 """"""""""""""""""""""""""""""""""""
 " Search through ctags with <,.>
 " nnoremap <leader>c :CtrlPTag<cr>
+let g:ctrlp_max_files=200000
 "}}} ------------------------------
 
 """"""""""""""""""""""""""""""""""""
@@ -417,13 +474,13 @@ set tags=./tags;$HOME,tags;
 "------------------     `Filetypes`       --------------------- {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " The general plain text file setup
-function! PlainFilyetypeConfig()
+function! PlainFiletypeConfig()
     setlocal spell spelllang=en
     setlocal noexpandtab
     setlocal wrap
     setlocal linebreak
     " Disable automatic newlines.
-    setlocal textwidth=0 
+    setlocal textwidth=0
     nnoremap j gj
     nnoremap k gk
     setlocal formatoptions=tcqnr21
@@ -454,36 +511,65 @@ function! CLinuxFiletypeConfig()
 endfunction
 
 function! GolangFiletypeConfig()
-    setl tabstop=8 
-    setl softtabstop=8 
-    setl shiftwidth=8 
+    setl tabstop=8
+    setl softtabstop=8
+    setl shiftwidth=8
     setl noexpandtab
 endfunction
 
 function! BashFiletypeConfig()
-    setl tabstop=4 
-    setl softtabstop=4 
-    setl shiftwidth=4 
-    setl textwidth=79
+    setl tabstop=2
+    setl softtabstop=2
+    setl shiftwidth=2
+    setl textwidth=0
     setl expandtab
 endfunction
 
 function! VimFiletypeConfig()
     setl foldmethod=marker
-    setl tabstop=4 
-    setl softtabstop=4 
-    setl shiftwidth=4 
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
 endfunction
 
 function! AdaFiletypeConfig()
     call LoadCscope()
 endfunction
 
-function! MakeFiletypConfig()
+function! MakeFiletypeConfig()
+endfunction
+"""""""""""""""""""""""""""""""""
+""""    `GHS Configuration`     "
+"""""""""""""""""""""""""""""""""
+function! GHS_C_FiletypeConfig()
+    setl tabstop=8
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=80
+    setl linebreak
+    setl cinoptions=(0,g.5s,h.5s
+    setl expandtab
+    setl formatoptions=crqnj12t
+    " Format
+    setl list
+    setl listchars=tab:»·,trail:·
+endfunction
+function! GHS_PythonFiletypeConfig()
+    setl tabstop=8
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=80
+    setl linebreak
+    setl expandtab
+    setl encoding=utf-8
+    setl list
+    setl listchars=tab:»·,trail:·
+    let python_highlight_all=1
+    call ConfigureSimpylFold()
 endfunction
 
 """"""""""""""""""""""""""""""""""""
-""""    `Gem5 Configuration`	   "
+""""    `Gem5 Configuration`       "
 """"""""""""""""""""""""""""""""""""
 function! Gem5CCFiletypeConfig()
     setl tabstop=4
@@ -494,9 +580,10 @@ function! Gem5CCFiletypeConfig()
     setl cinoptions=(0,g.5s,h.5s
     setl expandtab
     setl formatoptions=crqnj12t
-    " Highlight trailing spaces. 
+    " Highlight trailing spaces.
     setl list
-    setl listchars=trail:\ 
+    setl listchars=trail:\
+    setl listchars=tab:»·,trail:·
 endfunction
 function! Gem5PythonFiletypeConfig()
     setl tabstop=4
@@ -507,9 +594,9 @@ function! Gem5PythonFiletypeConfig()
     setl expandtab
     setl cinoptions=(0,g.5s,h.5s
     setl formatoptions=crqnj12t
-    " Highlight trailing spaces. 
+    " Highlight trailing spaces.
     setl list
-    setl listchars=trail:\ 
+    setl listchars=trail:\
 endfunction
 
 function! TryGem5FiletypeConfig(filetype)
@@ -545,9 +632,19 @@ function! SetupDefaultFiletypes()
     """"""""""""""""""""""""""""""""""""
     augroup MarkdownText
         au!
-        au Filetype markdown,text call PlainFilyetypeConfig()
+        au Filetype markdown,rst,text call PlainFiletypeConfig()
         au FileType markdown setl expandtab
     augroup END
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"    `Override Plaintext`    "{{{
+    """"""""""""""""""""""""""""""""""""
+    augroup PlaintextOverride
+        au!
+        au BufNewFile,BufRead *.dml call PlainFiletypeConfig()
+    augroup END
+
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
@@ -556,7 +653,7 @@ function! SetupDefaultFiletypes()
     " On make files, don't use tab rules
     augroup Makefile
         au!
-        au FileType make MakeFiletypeConfig()
+        au FileType make call MakeFiletypeConfig()
     augroup END
     "}}} -------------------------------
 
@@ -566,11 +663,9 @@ function! SetupDefaultFiletypes()
     augroup Python
         au!
         au BufNewFile,BufRead SConstruct,SConscript set filetype=python
-        au Filetype python call PythonFiletypeConfig()
-        au FileType python call TryGem5FiletypeConfig('Python')
-
+        au Filetype python call GHS_PythonFiletypeConfig()
         " Add automatic cleaning of whitespace to buffer saves.
-        au Filetype python call AddCleanupOnSave()
+        " au Filetype python call AddCleanupOnSave()
     augroup END
     "}}} -------------------------------
 
@@ -588,15 +683,19 @@ function! SetupDefaultFiletypes()
     """"""""""""""""""""""""""""""""""""
     augroup CC
         au!
-        au FileType c,h,cpp call CLinuxFiletypeConfig()
-        " Add the CC hook for gem5.
-        au FileType c,h,cpp call TryGem5FiletypeConfig('CC')
-
-        " Add automatic cleaning of whitespace to buffer saves.
-        au FileType c,h,cpp call AddCleanupOnSave()
+        au FileType c,h,cpp call GHS_C_FiletypeConfig()
 
         " Automatically try and load gtags for these projects.
         au FileType c,h,cpp call ConfigureGtags()
+    augroup END
+    "}}} -------------------------------
+
+    """"""""""""""""""""""""""""""""""""
+    """"        `Assembly`          "{{{
+    """"""""""""""""""""""""""""""""""""
+    augroup ASM
+        au!
+        au BufNewFile,BufRead *.a64, set filetype=asm
     augroup END
     "}}} -------------------------------
 
@@ -634,6 +733,7 @@ function! SetupDefaultFiletypes()
     augroup Vimrc
         au!
         autocmd bufwritepost .vimrc source $MYVIMRC
+        autocmd bufwritepost vimrc source $MYVIMRC
     augroup END
 endfunction
 
