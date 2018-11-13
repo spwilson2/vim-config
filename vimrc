@@ -256,9 +256,13 @@ function! OpenLog()
     execute 'tabe' l:log
 endfunction
 
+function! OpenNotes()
+    let l:notes = g:logdir . "/notes.rst"
+    execute 'tabe' l:notes
+endfunction
+
 function! InsertDateHeading()
     read !date +\%Y-\%m-\%d
-    read !echo "=========="
 endfunction
 
 " Initialization which needs to take place a little time in the future so other
@@ -274,6 +278,7 @@ let g:logdir = "~/Documents/logs"
 
 command! CleanWhitespace call CleanUpWhitespace()
 command! Log call OpenLog()
+command! Notes call OpenNotes()
 command! AddDate call InsertDateHeading()
 
 "}}} ==============================================================
