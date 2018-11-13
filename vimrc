@@ -272,10 +272,23 @@ function! PostInitSetup(timer)
     inoremap <S-Tab> <C-V><Tab>
 endfunction
 
-let _timer = timer_start(50, 'PostInitSetup', {})
+function! ReplaceTabs() range
+    let l:spaces = &tabstop
+    let l:count = 0
+    let l:str = ''
+    while l:count < l:spaces
+        let l:str = l:str . ' '
+        let l:count = 1 + l:count
+    endwhile
+    execute "'<,'>s/	/" . l:str . '/g'
+endfunction
+		
+
+let _timer = timer_start(100, 'PostInitSetup', {})
 
 let g:logdir = "~/Documents/logs"
 
+command! -range ReplaceTabs call ReplaceTabs()
 command! CleanWhitespace call CleanUpWhitespace()
 command! Log call OpenLog()
 command! Notes call OpenNotes()
