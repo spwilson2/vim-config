@@ -729,6 +729,10 @@ function! SetupDefaultFiletypes()
         au!
         au Filetype ada call AdaFiletypeConfig()
     augroup END
+    augroup DML
+        au!
+        au BufNewFile,BufRead *.dml, set filetype=text
+    augroup END
     "}}} -------------------------------
 
     """"""""""""""""""""""""""""""""""""
