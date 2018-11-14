@@ -70,6 +70,14 @@ Plug 'tpope/vim-surround'
 "}}} -------------------------------
 
 
+" Manage vim sessions (layouts, persist state)
+"
+" Use :Obsess (with optional file/directory name) to start recording to
+" a session file and :Obsess! to stop and throw it away.
+"
+" Load a session in the usual manner: vim -S, or :source it.
+Plug 'tpope/vim-obsession'
+
 " Initialize plugin system
 call plug#end()
 else
@@ -282,7 +290,7 @@ function! ReplaceTabs() range
     endwhile
     execute "'<,'>s/	/" . l:str . '/g'
 endfunction
-		
+
 
 let _timer = timer_start(100, 'PostInitSetup', {})
 
@@ -322,6 +330,8 @@ nnoremap <Leader>h :set invlist<CR>
 " Toggle Spell Check.
 nnoremap <Leader>sc :setl invspell<CR>
 
+nnoremap t gt
+nnoremap T gT
 
 " Split navigations
 nnoremap <C-J> <C-W><C-J>
