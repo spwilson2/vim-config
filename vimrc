@@ -26,7 +26,7 @@ Plug 'nvie/vim-flake8'
 Plug 'tmhedberg/SimpylFold'
 " Autocompletion simplified.
 " Go to github for install docs, otherwise will default install for python.
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 ./install.py' }
 " Generates a YCM config file
 "Plug 'rdnetto/YCM-Generator'
 " Rust
