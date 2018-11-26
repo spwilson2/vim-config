@@ -260,7 +260,7 @@ endfunction
 
 function! OpenLog()
     let l:log = g:logdir . "/log.rst"
-    execute '!~/projects/productivity/log.py' l:log
+    execute '!~/.dotfiles/subrepos/productivity/log.py' l:log
     execute 'tabe' l:log
 endfunction
 
@@ -294,7 +294,7 @@ endfunction
 
 let _timer = timer_start(100, 'PostInitSetup', {})
 
-let g:logdir = "~/Documents/logs"
+let g:logdir = "~/.dotfiles/subrepos/documents"
 
 command! -range ReplaceTabs call ReplaceTabs()
 command! CleanWhitespace call CleanUpWhitespace()
