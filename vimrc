@@ -131,8 +131,12 @@ set so=7
 " Disable automatic folding
 set foldlevel=99
 
-set guioptions-=m  "remove menu bar
-set guioptions-=T  "remove toolbar
+set guioptions-=m  " remove menu bar
+set guioptions-=T  " remove toolbar
+set guioptions+=k  " Resize the gui when gui elements are added/removed
+set guioptions+=c  " Simple dialogs, not annoying popups
+set guioptions+=e  " Use fancy tabs
+
 let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 set sessionoptions=curdir,folds,help,tabpages,winsize
 "}}} ==============================================================
