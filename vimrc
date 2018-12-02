@@ -14,7 +14,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'chrisbra/csv.vim'
 " Plug 'sjl/badwolf'
-
 """"""""""""""""""""""""""""""""""""
 """"    `IDE Plugs`           "{{{
 """"""""""""""""""""""""""""""""""""
@@ -37,6 +36,10 @@ Plug 'fatih/vim-go'
 " Plug 'scrooloose/nerdtree'
 " Plug 'vim-scripts/gtags.vim'
 Plug 'spwilson2/cscope_maps'
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi'
 
 " Useful if go to ctags, but doesn't work for global.
 " Plug 'xolox/vim-misc'
@@ -130,7 +133,7 @@ set foldlevel=99
 
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
-
+let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 set sessionoptions=curdir,folds,help,tabpages,winsize
 "}}} ==============================================================
 
