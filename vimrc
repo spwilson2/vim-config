@@ -237,6 +237,20 @@ function! LoadCscope()
 endfunction
 au BufEnter /* call LoadCscope()
 
+" Use grep on filenames instead of relying on find's patterns.
+command! -nargs=1 FindFiles call FindFiles(<q-args>)
+function! FindFiles(filename)
+  let error_file=tempname()
+  silent exe '!find . ~
+    \|grep -Pis "'.a:filename.'" -- -
+    \| xargs file
+    \| sed "s/:/:1:/" > '.error_file
+  setl errorformat=%f:%l:%m
+  exe "cfile ". error_file
+  copen
+  call delete(error_file)
+endfunction
+
 function! ConfigureGtags()
     " add any GTAGS database in current directory
     if filereadable("GTAGS")
