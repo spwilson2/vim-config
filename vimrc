@@ -727,6 +727,7 @@ function! SetupDefaultFiletypes()
         au Filetype python call GHS_PythonFiletypeConfig()
         " Add automatic cleaning of whitespace to buffer saves.
         " au Filetype python call AddCleanupOnSave()
+        au FileType c,h,cpp exec ':setl colorcolumn=' . &textwidth
     augroup END
     "}}} -------------------------------
 
@@ -748,6 +749,7 @@ function! SetupDefaultFiletypes()
 
         " Automatically try and load gtags for these projects.
         au FileType c,h,cpp call ConfigureGtags()
+        au FileType c,h,cpp exec ':setl colorcolumn=' . &textwidth
     augroup END
     "}}} -------------------------------
 
