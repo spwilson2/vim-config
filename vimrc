@@ -12,44 +12,60 @@ call plug#begin('~/.vim/plugged')
 "Plug 'morhetz/gruvbox'
 "Plug 'jnurmine/Zenburn'
 Plug 'joshdick/onedark.vim'
-Plug 'chrisbra/csv.vim'
 " Plug 'sjl/badwolf'
 """"""""""""""""""""""""""""""""""""
 """"    `IDE Plugs`           "{{{
 """"""""""""""""""""""""""""""""""""
-" Auto check syntax
-Plug 'scrooloose/syntastic'
-" PEP 8 checking, must have syntastic
-Plug 'nvie/vim-flake8'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+Plug 'tpope/vim-eunuch'
+
+Plug 'itchyny/lightline.vim'
+set noshowmode
+function! LightlineReload()
+    call lightline#init()
+    call lightline#colorscheme()
+    call lightline#update()
+endfunction
+let g:lightline = {
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  \     }
+  \ }
+
+" Async Linting
+Plug 'w0rp/ale'
+
 " Improve folding of functions.
 Plug 'tmhedberg/SimpylFold'
+
 " Autocompletion simplified.
 " Go to github for install docs, otherwise will default install for python.
 Plug 'Valloric/YouCompleteMe', { 'do': 'python3 ./install.py' }
+
 " Generates a YCM config file
 "Plug 'rdnetto/YCM-Generator'
-" Rust
-" Plug 'rust-lang/rust.vim'
-" Golang
-Plug 'fatih/vim-go'
+Plug 'rust-lang/rust.vim', { 'for': 'rust'}
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'chrisbra/csv.vim', { 'for': 'csv'}
+" Typescript
+Plug 'leafgarland/typescript-vim', { 'for': ['typescript', 'javascript']}
+Plug 'Quramy/tsuquyomi', { 'for': ['typescript', 'javascript']}
 
-" Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
+
 " Plug 'vim-scripts/gtags.vim'
 Plug 'spwilson2/cscope_maps'
-
-" Typescript
-Plug 'leafgarland/typescript-vim'
-Plug 'Quramy/tsuquyomi'
 
 " Useful if go to ctags, but doesn't work for global.
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
 
+" Comment out easily
+Plug 'tpope/vim-commentary'
 " Display tags on the edge of the screen
 "Plug 'majutsushi/tagbar'
-
-" Fuzzy Finder for files and sources
-" Plug 'kien/ctrlp.vim'
 
 """"""""""""""""""""""""""""""""""""
 """"    `Git Integration`       "{{{
@@ -277,30 +293,6 @@ endif
 " TODO: Functtion to increase/decrease font size
 " TODO: Better ag/grep
 
-" Use grep on filenames instead of relying on find's patterns.
-command! -nargs=1 FindFiles call FindFiles(<q-args>)
-function! FindFiles(filename)
-  let l:found_files=tempname()
-  silent exe '!find .
-    \|grep -Pis "'.a:filename.'" -- - >' . found_files
-
-  if  system('wc -l ' . l:found_files) == 1
-      let found_file = join(readfile(l:found_files), "")
-      exe "tabe ". l:found_file
-  else
-      let l:error_file=tempname()
-      silent exe '!cat "'.l:found_files.'"
-        \| xargs file
-        \| sed "s/:/:1:/" > '.error_file
-      setl errorformat=%f:%l:%m
-      exe "cfile ". l:error_file
-      copen
-      call delete(l:error_file)
-  endif
-
-  call delete(l:found_files)
-endfunction
-
 function! ConfigureGtags()
     " add any GTAGS database in current directory
     if filereadable("GTAGS")
@@ -363,6 +355,8 @@ function! ReplaceTabs() range
 endfunction
 
 
+" TODO Change this so it doesn't break when timer_start doesn't exist. Also
+" needs to be made mroe consistent.
 let _timer = timer_start(100, 'PostInitSetup', {})
 
 let g:logdir = "~/Documents/logs"
@@ -493,7 +487,7 @@ set list
 " Always show the status line
 set laststatus=2
 " Format the status line
-set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
+"set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
 " Show the command in progress at bottom.
 set showcmd
 "}}} -------------------------------
@@ -579,18 +573,18 @@ set t_ut=
 " Keep searching down until home or found tags.
 set tags=./tags;$HOME,tags;
 
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw
+"command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw
 " The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
+" if executable('ag')
+"   " Use ag over grep
+"   set grepprg=ag\ --nogroup\ --nocolor
+" 
+"   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" 
+"   " ag is fast enough that CtrlP doesn't need to cache
+"   let g:ctrlp_use_caching = 0
+" endif
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -863,6 +857,7 @@ function! SetupDefaultFiletypes()
         au!
         autocmd bufwritepost .vimrc source $MYVIMRC
         autocmd bufwritepost vimrc source $MYVIMRC
+        autocmd bufwritepost vimrc call LightlineReload()
     augroup END
 endfunction
 
