@@ -44,6 +44,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
 
 
     Plug 'rust-lang/rust.vim', { 'for': 'rust'}
+    Plug 'racer-rust/vim-racer', { 'for': 'rust'}
     Plug 'fatih/vim-go', { 'for': 'go' }
     Plug 'chrisbra/csv.vim', { 'for': 'csv'}
 
@@ -88,7 +89,7 @@ function! s:lightline()
     " Always show the status line
     set laststatus=2
     " Format default status line
-    set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
+    "set statusline=\ %{HasPaste()}%.30F%m%r%h\ %w\ \ %{SyntasticStatuslineFlag()}\ %=Buf:\ [%n]\ %l,%c
     set showcmd " Show the chord in progress
 endfunction
 " Lightline }
@@ -103,7 +104,7 @@ endfunction
 
 function! s:nerdtree()
     " Tab to open nerdtree
-    nnoremap <Tab> :NERDTreeToggle<CR>
+    nnoremap <S-Tab> :NERDTreeToggle<CR>
     " Close if nerdtree is last buffer open
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 endfunction
@@ -145,7 +146,7 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-set nohidden
+set hidden
 
 set history=100
 
