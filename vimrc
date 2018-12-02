@@ -237,6 +237,46 @@ function! LoadCscope()
 endfunction
 au BufEnter /* call LoadCscope()
 
+let &guifont = 'Monospace 12'
+
+if has("unix")
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+else
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+endif
+
+
+if has("gui_running")
+    nmap <leader>- :call FontSizeMinus()<CR>
+    nmap <leader>= :call FontSizePlus()<CR>
+endif
+" TODO: Functtion to increase/decrease font size
+" TODO: Better ag/grep
+
 " Use grep on filenames instead of relying on find's patterns.
 command! -nargs=1 FindFiles call FindFiles(<q-args>)
 function! FindFiles(filename)
@@ -539,6 +579,18 @@ set t_ut=
 " Keep searching down until home or found tags.
 set tags=./tags;$HOME,tags;
 
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 "}}} ==============================================================
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
