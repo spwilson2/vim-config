@@ -334,6 +334,18 @@ set pastetoggle=<F2>
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy
 nnoremap Y y$
 
+" Make the command mode feel a bit more like emacs.
+" Also try to fix the fact that some editors send meta as ^[
+execute "set <M-d>=\ed"
+execute "set <M-b>=\eb"
+execute "set <M-f>=\ef"
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-d> <S-Right><C-w>
+
+
 " Quick quit
 nnoremap <C-Q> :bd<CR>
 " Delete buffer without closing the window
