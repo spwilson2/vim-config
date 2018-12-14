@@ -11,7 +11,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     Plug 'tpope/vim-eunuch'
 
     Plug 'w0rp/ale' " Async Linting
-    Plug 'Valloric/YouCompleteMe', { 'do': 'python3 ./install.py' } " Autocompletion simplified.
+    Plug 'Valloric/YouCompleteMe', { 'do': 'python3 ./install.py --go-completer --rust-completer --ts-completer' }
     "Plug 'rdnetto/YCM-Generator'
 
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -44,7 +44,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
 
 
     Plug 'rust-lang/rust.vim', { 'for': 'rust'}
-    Plug 'racer-rust/vim-racer', { 'for': 'rust'}
+    "Plug 'racer-rust/vim-racer', { 'for': 'rust'}
     Plug 'fatih/vim-go', { 'for': 'go' }
     Plug 'chrisbra/csv.vim', { 'for': 'csv'}
 
@@ -55,13 +55,6 @@ else
     echom "Plugged can't be found"
 endif
 " } Plugged Setup
-
-" TODO Refactor to source all
-exec 'source ' . expand("~/.vim/local/whitespace.vim")
-exec 'source ' . expand("~/.vim/local/font.vim")
-exec 'source ' . expand("~/.vim/local/tags.vim")
-exec 'source ' . expand("~/.vim/local/log.vim")
-exec 'source ' . expand("~/.vim/local/filetypes.vim")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 "               Plugin Settings                     {
@@ -261,7 +254,7 @@ cnoremap <M-d> <S-Right><C-w>
 
 nnoremap <C-Q> :q<CR>
 " Delete buffer without closing the window
-nnoremap <C-X> :b#<bar>bd#<CR>
+"nnoremap <C-X> :b#<bar>bd#<CR>
 
 nnoremap <silent> <Leader>l     :setl invhls<cr><C-l>
 nnoremap <silent> <Leader>h     :set invlist<CR>
@@ -292,3 +285,10 @@ set pastetoggle=<F2>
 nnoremap <leader>f :call NaturalFold()<CR>
 nnoremap <leader>o zo
 " Hotkeys   }
+
+" TODO Refactor to source all
+exec 'source ' . expand("~/.vim/local/whitespace.vim")
+exec 'source ' . expand("~/.vim/local/font.vim")
+exec 'source ' . expand("~/.vim/local/tags.vim")
+exec 'source ' . expand("~/.vim/local/log.vim")
+exec 'source ' . expand("~/.vim/local/filetypes.vim")

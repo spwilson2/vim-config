@@ -16,6 +16,25 @@ function! DefaultConfig()
     set cinoptions=(0  " Params in parenthesis are same indentation.
 endfunction
 
+function! RustFiletypeConfig()
+    nmap gd <Plug>(rust-def)
+    nmap gs <Plug>(rust-def-split)
+    nmap gx <Plug>(rust-def-vertical)
+    nmap <leader>gd <Plug>(rust-doc)
+
+    setl tabstop=2
+    setl softtabstop=2
+    setl shiftwidth=2
+    setl expandtab
+    setl textwidth=79
+    setl linebreak
+    "setl cinoptions=(0,g.5s,h.5s
+    setl formatoptions=crqnj12t
+    " Format
+    setl list
+    setl listchars=tab:»·,trail:·
+endfunction
+
 " The general plain text file setup
 function! PlainFiletypeConfig()
     setlocal spell spelllang=en
@@ -284,6 +303,11 @@ function! SetupDefaultFiletypes()
         autocmd bufwritepost .vimrc source $MYVIMRC
         autocmd bufwritepost vimrc source $MYVIMRC
         autocmd bufwritepost vimrc call LightlineReload()
+    augroup END
+
+    augroup Rust
+        au!
+        au FileType rust call RustFiletypeConfig()
     augroup END
 endfunction
 
