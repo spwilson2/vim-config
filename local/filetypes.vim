@@ -3,7 +3,7 @@ function! DefaultConfig()
 
     set linebreak
     set textwidth=0
-    set formatoptions=tcrqj1
+    set formatoptions=crqj1
     set foldmethod=manual
 
     " Indentation
@@ -29,7 +29,7 @@ function! RustFiletypeConfig()
     setl textwidth=79
     setl linebreak
     "setl cinoptions=(0,g.5s,h.5s
-    setl formatoptions=crqnj12t
+    setl formatoptions=crqnj12
     " Format
     setl list
     setl listchars=tab:»·,trail:·
@@ -45,7 +45,7 @@ function! PlainFiletypeConfig()
     setlocal textwidth=0
     nnoremap j gj
     nnoremap k gk
-    setlocal formatoptions=tcqnr21
+    setlocal formatoptions=cqnr21
     " setlocal formatprg=par
 endfunction
 
@@ -59,6 +59,8 @@ function! PythonFiletypeConfig()
     setl encoding=utf-8
     let python_highlight_all=1
     call ConfigureSimpylFold()
+    "setl cinoptions=(0,g.5s,h.5s
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 
 function! CUEFIFiletypeConfig()
@@ -70,6 +72,7 @@ function! CLinuxFiletypeConfig()
     setl shiftwidth=8
     setl textwidth=79
     setl noexpandtab
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 
 function! GolangFiletypeConfig()
@@ -111,23 +114,24 @@ function! GHS_C_FiletypeConfig()
     setl linebreak
     setl cinoptions=(0,g.5s,h.5s
     setl expandtab
-    setl formatoptions=crqnj12t
+    setl formatoptions=crqnj12
     " Format
     setl list
     setl listchars=tab:»·,trail:·
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 function! GHS_PythonFiletypeConfig()
     setl tabstop=8
     setl softtabstop=4
     setl shiftwidth=4
-    setl textwidth=80
+    setl textwidth=79
     setl linebreak
     setl expandtab
     setl encoding=utf-8
     setl list
     setl listchars=tab:»·,trail:·
     let python_highlight_all=1
-    call ConfigureSimpylFold()
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 
 """"""""""""""""""""""""""""""""""""
@@ -141,11 +145,12 @@ function! Gem5CCFiletypeConfig()
     setl linebreak
     setl cinoptions=(0,g.5s,h.5s
     setl expandtab
-    setl formatoptions=crqnj12t
+    setl formatoptions=crqnj12
     " Highlight trailing spaces.
     setl list
     setl listchars=trail:\
     setl listchars=tab:»·,trail:·
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 function! Gem5PythonFiletypeConfig()
     setl tabstop=4
@@ -155,10 +160,11 @@ function! Gem5PythonFiletypeConfig()
     setl linebreak
     setl expandtab
     setl cinoptions=(0,g.5s,h.5s
-    setl formatoptions=crqnj12t
+    setl formatoptions=crqnj12
     " Highlight trailing spaces.
     setl list
     setl listchars=trail:\
+    exec ':setl colorcolumn=' . &textwidth
 endfunction
 
 function! TryGem5FiletypeConfig(filetype)
@@ -228,7 +234,6 @@ function! SetupDefaultFiletypes()
         au Filetype python call GHS_PythonFiletypeConfig()
         " Add automatic cleaning of whitespace to buffer saves.
         " au Filetype python call AddCleanupOnSave()
-        au FileType c,h,cpp exec ':setl colorcolumn=' . &textwidth
     augroup END
     "}}} -------------------------------
 

@@ -287,6 +287,7 @@ nnoremap <leader>o zo
 " Hotkeys   }
 
 " TODO Refactor to source all
+exec 'source ' . expand("~/.vim/local/python.vim")
 exec 'source ' . expand("~/.vim/local/whitespace.vim")
 exec 'source ' . expand("~/.vim/local/font.vim")
 exec 'source ' . expand("~/.vim/local/tags.vim")
