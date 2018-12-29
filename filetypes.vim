@@ -190,7 +190,6 @@ function! SetupDefaultFiletypes()
     " Return to last edit position when opening files
     augroup Startup
         au!
-        au BufReadPost * call ReturnToLastLocation()
         au BufNewFile,BufRead makefile.inc set filetype=make
         au BufNewFile,BufRead SConscript,SConstruct set filetype=python
     augroup END
