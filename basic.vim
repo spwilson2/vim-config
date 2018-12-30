@@ -172,11 +172,15 @@ vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 " Open a tab in the current file directory
-nnoremap <leader>td :tabedit <c-r>=expand("%:p:h")<cr>/
-" Open a tab of the same file
-nnoremap <leader>te :tabedit <c-r>=expand("%")<cr>/
+nnoremap <leader>td :tabedit <C-R>=expand("%:p:h")<CR>/<CR>
+
+" Open a tab of the same file in the same location
+nnoremap <leader>te :call NewTab(expand('%'))<CR>
 
 set pastetoggle=<F2>
+
+" Reload all of vimrc
+command! ReloadConfig exec 'source ' . expand('~/.vim/vimrc')
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions
@@ -216,4 +220,11 @@ function! ReturnToLastLocation()
     if line("'\"") > 0 && line("'\"") <= line("$")
         exe "normal! g`\""
     endif
+endfunction
+
+" Save position of cursor on open of this same tab.
+function! NewTab(tab)
+    let save_pos = getpos(".")
+    exec 'tabe ' . a:tab
+    call setpos('.', save_pos)
 endfunction
