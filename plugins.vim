@@ -81,7 +81,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     call myplug#begin('~/.vim/plugged')
 
     MyPlug 'joshdick/onedark.vim', {'configure': function('plugins#onedark')}
-    MyPlug 'vim-scripts/peaksea', {'configure': function('plugins#peaksea')}
+    "MyPlug 'vim-scripts/peaksea', {'configure': function('plugins#peaksea')}
 
     MyPlug 'itchyny/lightline.vim', {'configure': function('plugins#lightline')}
 
