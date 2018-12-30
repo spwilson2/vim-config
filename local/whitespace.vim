@@ -1,34 +1,15 @@
 " Preserves the previous state after running a command
-function! s:preserve(command)
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    execute a:command
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-
-function! CleanUpWhitespace()
-    call s:preserve("%s/\\s\\+$//e")
-endfunction
-
 " Add cleanup on save to a buffer.
 function! AddCleanupOnSave()
     augroup CleanupWhitespace
         au!
-        au BufWritePre <buffer> call CleanUpWhitespace()
+        au BufWritePre <buffer> CleanWhitespace
     augroup END
 endfunction
 
-command! CleanWhitespace call CleanUpWhitespace()
+command! -range=%  CleanWhitespace <line1>,<line2>s/\(\s\| \)\+$// | norm! ``
 
-" Remove trailing whitespace and preserve the previous search pattern
-" nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-
-function! s:replacetabs() range
+function! s:replacetabs()
     let l:spaces = &tabstop
     let l:count = 0
     let l:str = ''
@@ -36,7 +17,7 @@ function! s:replacetabs() range
         let l:str = l:str . ' '
         let l:count = 1 + l:count
     endwhile
-    execute "'<,'>s/	/" . l:str . '/g'
+    execute "'<,'>s/	/" . l:str . '/ge'
 endfunction
 
-command! -range ReplaceTabs call s:replacetabs()
+command! -range=% ReplaceTabs <line1>,<line2>call s:replacetabs()
