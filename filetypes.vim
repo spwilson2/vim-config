@@ -56,23 +56,16 @@ function! PythonFiletypeConfig()
     setl shiftwidth=4
     setl textwidth=79
     setl expandtab
-    setl encoding=utf-8
-    let python_highlight_all=1
-    call ConfigureSimpylFold()
-    "setl cinoptions=(0,g.5s,h.5s
-    exec ':setl colorcolumn=' . &textwidth
 endfunction
 
-function! CUEFIFiletypeConfig()
-endfunction
-
-function! CLinuxFiletypeConfig()
+function! Linux_C_FiletypeConfig()
     setl tabstop=8
-    setl softtabstop=8
     setl shiftwidth=8
-    setl textwidth=79
+    setl softtabstop=8
+    setl textwidth=80
     setl noexpandtab
-    exec ':setl colorcolumn=' . &textwidth
+    setl cindent
+	setl cinoptions=:0,l1,t0,g0,(0
 endfunction
 
 function! GolangFiletypeConfig()
@@ -103,6 +96,7 @@ endfunction
 
 function! MakeFiletypeConfig()
 endfunction
+
 """""""""""""""""""""""""""""""""
 """"    `GHS Configuration`     "
 """""""""""""""""""""""""""""""""
@@ -118,8 +112,8 @@ function! GHS_C_FiletypeConfig()
     " Format
     setl list
     setl listchars=tab:»·,trail:·
-    exec ':setl colorcolumn=' . &textwidth
 endfunction
+
 function! GHS_PythonFiletypeConfig()
     setl tabstop=8
     setl softtabstop=4
@@ -127,193 +121,104 @@ function! GHS_PythonFiletypeConfig()
     setl textwidth=79
     setl linebreak
     setl expandtab
-    setl encoding=utf-8
     setl list
     setl listchars=tab:»·,trail:·
-    let python_highlight_all=1
-    exec ':setl colorcolumn=' . &textwidth
+    let b:python_highlight_all=1
 endfunction
 
-""""""""""""""""""""""""""""""""""""
-""""    `Gem5 Configuration`       "
-""""""""""""""""""""""""""""""""""""
-function! Gem5CCFiletypeConfig()
-    setl tabstop=4
-    setl softtabstop=4
-    setl shiftwidth=4
-    setl textwidth=79
-    setl linebreak
-    setl cinoptions=(0,g.5s,h.5s
-    setl expandtab
-    setl formatoptions=crqnj12
-    " Highlight trailing spaces.
-    setl list
-    setl listchars=trail:\
-    setl listchars=tab:»·,trail:·
-    exec ':setl colorcolumn=' . &textwidth
-endfunction
-function! Gem5PythonFiletypeConfig()
-    setl tabstop=4
-    setl softtabstop=4
-    setl shiftwidth=4
-    setl textwidth=79
-    setl linebreak
-    setl expandtab
-    setl cinoptions=(0,g.5s,h.5s
-    setl formatoptions=crqnj12
-    " Highlight trailing spaces.
-    setl list
-    setl listchars=trail:\
-    exec ':setl colorcolumn=' . &textwidth
-endfunction
-
-function! TryGem5FiletypeConfig(filetype)
-    if matchstr(expand('%:p'), '*/gem5/*') == -1
-        return
-    elseif a:filetype == 'CC'
-        call Gem5CCFiletypeConfig()
-    elseif a:filetype == 'Python'
-        call Gem5PythonFiletypeConfig()
+function! Try_C_FiletypeConfigs()
+    if matchstr(expand('%:p'), '*/linux/*') == 0
+        call Linux_C_FiletypeConfig()
+    else
+        call GHS_C_FiletypeConfig()
     endif
 endfunction
 
-function! Gem5FiletypeOverrides()
-    let l:ext = expand('%:e')
-    if l:ext == "c" || l:ext == "hh" || l:ext == "cc"
-    endif
-endfunction
 
-""""""""""""""""""""""""""""""""""""
-""""    `Set Filetypes`		"{{{
-""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Autogroup commands for each filetype
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Declare in a function so their order is placed after and final preconfiguration
 function! SetupDefaultFiletypes()
-    " Return to last edit position when opening files
-    augroup Startup
-        au!
-        au BufNewFile,BufRead makefile.inc set filetype=make
-        au BufNewFile,BufRead SConscript,SConstruct set filetype=python
-    augroup END
+augroup Generic
+	au!
+	au BufNewFile,BufRead makefile.inc set filetype=make
+	au BufNewFile,BufRead SConscript,SConstruct set filetype=python
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"    `Markdown, Text`        "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup MarkdownText
-        au!
-        au Filetype markdown,rst,text call PlainFiletypeConfig()
-        au FileType markdown setl expandtab
-    augroup END
-    "}}} -------------------------------
+augroup Text
+	au!
+	au Filetype markdown,rst,text call PlainFiletypeConfig()
+	au FileType markdown setl expandtab
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"    `Override Plaintext`    "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup PlaintextOverride
-        au!
-        au BufNewFile,BufRead *.dml call PlainFiletypeConfig()
-    augroup END
+augroup DML
+	au!
+	au BufNewFile,BufRead *.dml, set filetype=text
+	au BufNewFile,BufRead *.dml call PlainFiletypeConfig()
+augroup END
 
-    "}}} -------------------------------
+augroup Makefile
+	au!
+	au FileType make call MakeFiletypeConfig()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `Makefile`          "{{{
-    """"""""""""""""""""""""""""""""""""
-    " On make files, don't use tab rules
-    augroup Makefile
-        au!
-        au FileType make call MakeFiletypeConfig()
-    augroup END
-    "}}} -------------------------------
+augroup Python
+	au!
+	au BufNewFile,BufRead SConstruct,SConscript set filetype=python
+	au Filetype python call GHS_PythonFiletypeConfig()
+	" Add automatic cleaning of whitespace to buffer saves.
+	" au Filetype python call AddCleanupOnSave()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `Python`            "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup Python
-        au!
-        au BufNewFile,BufRead SConstruct,SConscript set filetype=python
-        au Filetype python call GHS_PythonFiletypeConfig()
-        " Add automatic cleaning of whitespace to buffer saves.
-        " au Filetype python call AddCleanupOnSave()
-    augroup END
-    "}}} -------------------------------
+augroup Bash
+	au!
+	au FileType sh call BashFiletypeConfig()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"            `Bash`          "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup Bash
-        au!
-        au FileType sh call BashFiletypeConfig()
-    augroup END
-    "}}} -------------------------------
+augroup CC
+	au!
+	au FileType c,h,cpp call TryCFiletypeConfigs()
+	au FileType c,h,cpp call ConfigureGtags()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"            `CC`             "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup CC
-        au!
-        au FileType c,h,cpp call GHS_C_FiletypeConfig()
+augroup ASM
+	au!
+	au BufNewFile,BufRead *.a64, set filetype=asm
+augroup END
 
-        " Automatically try and load gtags for these projects.
-        au FileType c,h,cpp call ConfigureGtags()
-        au FileType c,h,cpp exec ':setl colorcolumn=' . &textwidth
-    augroup END
-    "}}} -------------------------------
+augroup VimL
+	au!
+	au FileType vim call VimFiletypeConfig()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `Assembly`          "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup ASM
-        au!
-        au BufNewFile,BufRead *.a64, set filetype=asm
-    augroup END
-    "}}} -------------------------------
+augroup Golang
+	au!
+	au Filetype go call GolangFiletypeConfig()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"            `VimL`	    "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup VimL
-        au!
-        au FileType vim call VimFiletypeConfig()
-    augroup END
-    "}}} -------------------------------
+augroup Ada
+	au!
+	au Filetype ada call AdaFiletypeConfig()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `Golang`	    "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup Golang
-        au!
-        au Filetype go call GolangFiletypeConfig()
-    augroup END
-    "}}} -------------------------------
+augroup DML
+	au!
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `Ada`	            "{{{
-    """"""""""""""""""""""""""""""""""""
-    augroup Ada
-        au!
-        au Filetype ada call AdaFiletypeConfig()
-    augroup END
-    augroup DML
-        au!
-        au BufNewFile,BufRead *.dml, set filetype=text
-    augroup END
-    "}}} -------------------------------
+augroup Vimrc
+	au!
+	au bufwritepost .vimrc source $MYVIMRC
+	au bufwritepost vimrc source $MYVIMRC
+	au bufwritepost vimrc call LightlineReload()
+augroup END
 
-    """"""""""""""""""""""""""""""""""""
-    """"        `vimrc`	            "{{{
-    """"""""""""""""""""""""""""""""""""
-    " Source the vimrc file after saving it
-    augroup Vimrc
-        au!
-        autocmd bufwritepost .vimrc source $MYVIMRC
-        autocmd bufwritepost vimrc source $MYVIMRC
-        autocmd bufwritepost vimrc call LightlineReload()
-    augroup END
-
-    augroup Rust
-        au!
-        au FileType rust call RustFiletypeConfig()
-    augroup END
+augroup Rust
+	au!
+	au FileType rust call RustFiletypeConfig()
+augroup END
 endfunction
 
+" Make sure default is first so it is executed before non-default filetype
 call DefaultConfig()
 call SetupDefaultFiletypes()
