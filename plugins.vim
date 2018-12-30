@@ -39,7 +39,10 @@ endfunction
 
 function! plugins#youcompleteme()
     " if python 3 not working. Set the path.
-    "let gycm_path_to_python_interpreter = '/usr/bin/python3'
+    let gycm_path_to_python_interpreter = '/usr/bin/python3'
+    let g:ycm_show_diagnostics_ui = 1
+    let g:ycm_enable_diagnostic_signs = 0
+    let g:ycm_enable_diagnostic_highlighting = 0
     "let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_global_conf.py'
     " Disable to turn off asking about running files.
     " let g:ycm_confirm_extra_conf = 1

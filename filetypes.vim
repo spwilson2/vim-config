@@ -127,7 +127,7 @@ function! GHS_PythonFiletypeConfig()
 endfunction
 
 function! Try_C_FiletypeConfigs()
-    if matchstr(expand('%:p'), '*/linux/*') == 0
+    if (matchstr(expand('%:p'), '*/linux/*') == 0)
         call Linux_C_FiletypeConfig()
     else
         call GHS_C_FiletypeConfig()
@@ -178,7 +178,7 @@ augroup END
 
 augroup CC
 	au!
-	au FileType c,h,cpp call TryCFiletypeConfigs()
+	au FileType c,h,cpp call Try_C_FiletypeConfigs()
 	au FileType c,h,cpp call ConfigureGtags()
 augroup END
 
