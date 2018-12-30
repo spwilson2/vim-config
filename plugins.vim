@@ -72,6 +72,11 @@ function! plugins#simplyfold()
     setl foldmethod=expr
 endfunction
 
+function! plugins#ale()
+    let g:ale_linters_explicit = 1
+    let b:ale_linters = ['python']
+endfunction
+
 if !empty(glob("~/.vim/autoload/plug.vim"))
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -88,8 +93,9 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     MyPlug 'scrooloose/nerdtree'
     MyPlug 'tpope/vim-eunuch'
 
-    MyPlug 'w0rp/ale' " Async Linting
-    MyPlug 'Valloric/YouCompleteMe', { 
+    " Async Linting
+    MyPlug 'w0rp/ale', {'configure': function('plugins#ale')}
+    MyPlug 'Valloric/YouCompleteMe', {
                 \ 'do': 'python3 ./install.py --go-completer --rust-completer --ts-completer',
                 \ 'configure': function('plugins#youcompleteme')}
     "Plug 'rdnetto/YCM-Generator'
@@ -118,13 +124,17 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     " Load a session in the usual manner: vim -S, or :source it.
     MyPlug 'tpope/vim-obsession'
 
-    "Plug 'tpope/vim-fugitive'
-    "Plug 'airblade/vim-gitgutter'
+    " Git Plugins
+    MyPlug 'tpope/vim-fugitive'
+    MyPlug 'airblade/vim-gitgutter'
+
+    " Svn Plugin
+    MyPlug 'juneedahamed/svnj.vim'
 
     MyPlug 'rust-lang/rust.vim', { 'for': 'rust'}
     "Plug 'racer-rust/vim-racer', { 'for': 'rust'}
     MyPlug 'fatih/vim-go', { 'for': 'go', 'configure': function('plugins#vimgo')}
-    MyPlug 'chrisbra/csv.vim', { 'for': 'csv'}
+    " MyPlug 'chrisbra/csv.vim', { 'for': 'csv'}
 
     MyPlug 'leafgarland/typescript-vim', { 'for': ['typescript', 'javascript']}
     MyPlug 'Quramy/tsuquyomi', { 'for': ['typescript', 'javascript']}
@@ -142,6 +152,6 @@ exec 'source ' . expand("~/.vim/local/log.vim")
 
 if has("gui_running")
     exec 'source ' . expand("~/.vim/local/zoom.vim")
-    nmap <leader>- :call FontSizeMinus()<CR>
-    nmap <leader>= :call FontSizePlus()<CR>
+    nmap - :call FontSizeMinus()<CR>
+    nmap + :call FontSizePlus()<CR>
 endif

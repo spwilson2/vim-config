@@ -18,8 +18,11 @@ set virtualedit=onemore " Let vim go past the last char.
 set backspace=eol,start,indent " Rm endlines and indents
 set foldlevel=99
 
+" Don't change the EOF
+set nofixendofline
 
-" Specify the behavior when switching between buffers 
+
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
 catch
@@ -95,7 +98,7 @@ set showtabline=2
 
 hi SpecialKey guifg=red ctermfg=red
 set listchars=tab:»·,trail:·
-set list
+set nolist
 
 " Dont' use the terminal background color
 set t_ut=
@@ -142,8 +145,9 @@ nnoremap <C-X> :Bclose<CR>
 " Close the window
 nnoremap <C-Q> :q<CR>
 
-nnoremap <silent> <Leader>l     :setl invhls<cr><C-l>
-nnoremap <silent> <Leader>h     :set invlist<CR>
+nnoremap <silent> <Leader>h     :setl invhls<cr><C-l>
+nnoremap <silent> <Leader>l     :call ToggleShowColumn()<CR>
+nnoremap <silent> <Leader>w     :setl invlist<CR>
 nnoremap <silent> <Leader>sc    :setl invspell<CR>
 
 " Tab navigation, with quick setup for next nav.
@@ -219,6 +223,25 @@ endfunction
 function! ReturnToLastLocation()
     if line("'\"") > 0 && line("'\"") <= line("$")
         exe "normal! g`\""
+    endif
+endfunction
+
+function! ToggleSidebar()
+    if exists(":GitGutterToggle")
+        GitGutterToggle
+    endif
+    set invnumber
+endfunction
+
+function! ToggleShowColumn()
+    let l:show_column=get(b:, 'next_show_column', "true")
+
+    if l:show_column == "true"
+        exec ':setl colorcolumn=' . &textwidth
+        let b:next_show_column="false"
+    else
+        exec ':setl colorcolumn='
+        let b:next_show_column="true"
     endif
 endfunction
 
