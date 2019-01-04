@@ -63,11 +63,11 @@ set wildmenu " Use a matching menu for selecting files.
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
-else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-endif
+"if has("win16") || has("win32")
+"    set wildignore+=.git\*,.hg\*,.svn\*
+"else
+"    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+"endif
 
 let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 
@@ -77,7 +77,7 @@ let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 set modeline
 set noerrorbells
 set novisualbell
-set guifont=Monospace\ 12
+set guifont=Monospace\ 11
 "Remove scrollbars
 set guioptions-=r
 set guioptions-=R
