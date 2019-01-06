@@ -71,10 +71,6 @@ function! plugins#vimgo()
     let g:go_version_warning = 0
 endfunction
 
-function! plugins#simplyfold()
-    setl foldmethod=expr
-endfunction
-
 function! plugins#ale()
     let g:ale_linters_explicit = 1
     let b:ale_linters = ['python']
@@ -115,7 +111,6 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     MyPlug 'MattesGroeger/vim-bookmarks'
     MyPlug 'tpope/vim-surround'
 
-    MyPlug 'tmhedberg/SimpylFold', {'configure': function('plugins#simplyfold')}
     MyPlug 'tpope/vim-commentary'
     MyPlug 'tpope/vim-scriptease'
 
