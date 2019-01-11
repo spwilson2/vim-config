@@ -38,7 +38,7 @@ endfunction
 " The general plain text file setup
 function! PlainFiletypeConfig()
     setlocal spell spelllang=en
-    setlocal noexpandtab
+    setlocal expandtab
     setlocal wrap
     setlocal linebreak
     " Disable automatic newlines.
@@ -106,9 +106,9 @@ function! GHS_C_FiletypeConfig()
     setl shiftwidth=4
     setl textwidth=80
     setl linebreak
-    setl cinoptions=(0,g.5s,h.5s
-    setl expandtab
-    setl formatoptions=crqnj12
+    setl cinoptions=
+    setl noexpandtab
+    setl formatoptions=crqnj12t
     " Format
     setl list
     setl listchars=tab:»·,trail:·
@@ -127,11 +127,11 @@ function! GHS_PythonFiletypeConfig()
 endfunction
 
 function! Try_C_FiletypeConfigs()
-    if (matchstr(expand('%:p'), '*/linux/*') == 0)
-        call Linux_C_FiletypeConfig()
-    else
+    "if (matchstr(expand('%:p'), '*/linux/*') == 0)
+    "    call Linux_C_FiletypeConfig()
+    "else
         call GHS_C_FiletypeConfig()
-    endif
+    "endif
 endfunction
 
 
@@ -156,6 +156,26 @@ augroup DML
 	au!
 	au BufNewFile,BufRead *.dml, set filetype=text
 	au BufNewFile,BufRead *.dml call PlainFiletypeConfig()
+augroup END
+
+augroup DTB
+    au!
+    function! DtbLoad()
+        let l:tmpfile = tempname() . '.dtb'
+        execute 'write ' . l:tmpfile
+        1,$d
+        execute 'read !fdtdump  ' . l:tmpfile
+        execute 'silent !rm ' . l:tmpfile
+    endfunction
+    function! DtbSave()
+        let l:tmpfile = tempname() . '.dts'
+        execute 'write ' . l:tmpfile
+        " TODO Need to support different dtc paths...
+        execute '!dtc -O dtb -o ' . expand('%') . ' ' . l:tmpfile 
+    endfunction
+    au BufReadPost *.dtb call DtbLoad() | set ro
+    au BufReadPost *.dtb set filetype=dts
+    "au BufWritePre *.dtb call DtbSave() | call DtbLoad() | set nomod
 augroup END
 
 augroup Makefile
