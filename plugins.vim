@@ -73,7 +73,8 @@ endfunction
 
 function! plugins#ale()
     let g:ale_linters_explicit = 1
-    let b:ale_linters = ['python']
+    let g:ale_linters = {'python': ['pycodestyle']}
+    let g:ale_enabled = 0
 endfunction
 
 if !empty(glob("~/.vim/autoload/plug.vim"))
