@@ -37,6 +37,11 @@ function! plugins#onedark()
     set background=dark
 endfunction
 
+function! plugins#papercolor()
+    colorscheme PaperColor
+    set background=light
+endfunction
+
 function! plugins#youcompleteme()
     " if python 3 not working. Set the path.
     let gycm_path_to_python_interpreter = '/usr/bin/python3'
@@ -85,7 +90,8 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     exec 'source ' . expand("~/.vim/local/myplug.vim")
     call myplug#begin('~/.vim/plugged')
 
-    MyPlug 'joshdick/onedark.vim', {'configure': function('plugins#onedark')}
+    "MyPlug 'joshdick/onedark.vim', {'configure': function('plugins#onedark')}
+    MyPlug 'NLKNguyen/papercolor-theme', {'configure': function('plugins#papercolor')}
     "MyPlug 'vim-scripts/peaksea', {'configure': function('plugins#peaksea')}
 
     MyPlug 'itchyny/lightline.vim', {'configure': function('plugins#lightline')}
