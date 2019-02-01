@@ -251,3 +251,12 @@ function! NewTab(tab)
     exec 'tabe ' . a:tab
     call setpos('.', save_pos)
 endfunction
+
+function! DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call DiffWithSaved()
