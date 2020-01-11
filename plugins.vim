@@ -78,8 +78,13 @@ endfunction
 
 function! plugins#ale()
     let g:ale_linters_explicit = 1
-    let g:ale_linters = {'python': ['pycodestyle']}
-    let g:ale_enabled = 0
+    let g:ale_linters = {
+                \ 'python': ['pycodestyle'],
+                \ 'rust': ['cargo'],
+                \ }
+    let g:ale_rust_rls_toolchain = 'stable'
+    let g:ale_set_balloons = 1
+    let g:ale_enabled = 1
 endfunction
 
 if !empty(glob("~/.vim/autoload/plug.vim"))
@@ -90,13 +95,13 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     exec 'source ' . expand("~/.vim/local/myplug.vim")
     call myplug#begin('~/.vim/plugged')
 
-    "MyPlug 'joshdick/onedark.vim', {'configure': function('plugins#onedark')}
-    MyPlug 'NLKNguyen/papercolor-theme', {'configure': function('plugins#papercolor')}
+    MyPlug 'joshdick/onedark.vim', {'configure': function('plugins#onedark')}
+    "MyPlug 'NLKNguyen/papercolor-theme', {'configure': function('plugins#papercolor')}
     "MyPlug 'vim-scripts/peaksea', {'configure': function('plugins#peaksea')}
 
     MyPlug 'itchyny/lightline.vim', {'configure': function('plugins#lightline')}
 
-    MyPlug 'scrooloose/nerdtree'
+    MyPlug 'scrooloose/nerdtree', {'configure': function('plugins#nerdtree')}
     MyPlug 'tpope/vim-eunuch'
 
     " Async Linting
@@ -137,7 +142,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     MyPlug 'juneedahamed/svnj.vim'
 
     MyPlug 'rust-lang/rust.vim', { 'for': 'rust'}
-    "Plug 'racer-rust/vim-racer', { 'for': 'rust'}
+    MyPlug 'racer-rust/vim-racer', { 'for': 'rust'}
     MyPlug 'fatih/vim-go', { 'for': 'go', 'configure': function('plugins#vimgo')}
     " MyPlug 'chrisbra/csv.vim', { 'for': 'csv'}
 
