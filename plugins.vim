@@ -42,6 +42,10 @@ function! plugins#papercolor()
     set background=light
 endfunction
 
+function! plugins#tsuquyomi()
+    let g:tsuquyomi_disable_quickfix = 1
+endfunction
+
 function! plugins#youcompleteme()
     " if python 3 not working. Set the path.
     let gycm_path_to_python_interpreter = '/usr/bin/python3'
@@ -146,8 +150,8 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     MyPlug 'fatih/vim-go', { 'for': 'go', 'configure': function('plugins#vimgo')}
     " MyPlug 'chrisbra/csv.vim', { 'for': 'csv'}
 
-    MyPlug 'leafgarland/typescript-vim', { 'for': ['typescript', 'javascript']}
-    MyPlug 'Quramy/tsuquyomi', { 'for': ['typescript', 'javascript']}
+    "MyPlug 'leafgarland/typescript-vim', { 'for': ['typescript', 'javascript']}
+    "MyPlug 'Quramy/tsuquyomi', { 'for': ['typescript', 'javascript'], 'configure': function('plugins#tsuquyomi')}
     call myplug#end()
 else
     echom "Plugged can't be found"
