@@ -77,7 +77,7 @@ let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 set modeline
 set noerrorbells
 set novisualbell
-set guifont=Monospace\ 11
+set guifont=Monospace\ 10
 "Remove scrollbars
 set guioptions-=r
 set guioptions-=R
