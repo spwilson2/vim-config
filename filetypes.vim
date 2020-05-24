@@ -58,6 +58,14 @@ function! PythonFiletypeConfig()
     setl expandtab
 endfunction
 
+function! Javascript_FiletypeConfig()
+    setl tabstop=2
+    setl shiftwidth=2
+    setl softtabstop=2
+    setl textwidth=100
+    setl expandtab
+endfunction
+
 function! Linux_C_FiletypeConfig()
     setl tabstop=8
     setl shiftwidth=8
@@ -224,6 +232,11 @@ augroup END
 
 augroup DML
 	au!
+augroup END
+
+augroup JS
+	au!
+	au Filetype javascript,css,scss,typescriptreact call Javascript_FiletypeConfig()
 augroup END
 
 augroup Vimrc
