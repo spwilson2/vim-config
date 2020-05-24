@@ -22,11 +22,11 @@ function! RustFiletypeConfig()
     nmap gx <Plug>(rust-def-vertical)
     nmap <leader>gd <Plug>(rust-doc)
 
-    setl tabstop=2
-    setl softtabstop=2
-    setl shiftwidth=2
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
     setl expandtab
-    setl textwidth=79
+    setl textwidth=99
     setl linebreak
     "setl cinoptions=(0,g.5s,h.5s
     setl formatoptions=crqnj12
