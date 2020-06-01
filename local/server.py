@@ -1,3 +1,5 @@
+import argparse
+
 import time
 import os
 import json
@@ -5,6 +7,7 @@ import json
 import threading
 import socket
 import socketserver
+import daemon
 
 # Every second
 HEARTBEAT_TIMEOUT = 1 * 10**9
@@ -31,9 +34,10 @@ class ServerData:
             self.mru_clients.remove(c)
 
     def client_heartbeat(self, client):
-        self.clients[clients] = gettime()
+        self.clients[client] = gettime()
 
     def client_active(self, client):
+        print(self.mru_clients)
         if client in self.mru_clients:
             self.mru_clients.remove(client)
         self.mru_clients.append(client)
@@ -82,7 +86,7 @@ class Server:
             raise
 
     def handle_hearbeat(self, con, data):
-        client = get_clientname(data)
+        client = self.get_clientname(data)
         with self.data.lock:
             self.data.client_heartbeat(client)
         con.send(json.dumps({
@@ -91,9 +95,9 @@ class Server:
             }).encode('utf-8'))
 
     def handle_active(self, con, data):
-        client = get_clientname(data)
+        client = self.get_clientname(data)
         with self.data.lock:
-            self.data.active_client(client)
+            self.data.client_active(client)
         con.send(json.dumps({
             'msg': 'ack-active',
             'client': client,
@@ -110,12 +114,12 @@ class Server:
     def handle(self, con, request):
         if 'msg' not in request:
             print('Received invalid message:')
-            print('\t\t', msg)
+            print('\t\t', request)
             return
 
         if request['msg'] not in self.handlers:
             print('Received invalid message type:')
-            print('\t\t', msg)
+            print('\t\t', request)
             return
 
         return self.handlers[request['msg']](con, request)
@@ -125,23 +129,37 @@ class Handler(socketserver.BaseRequestHandler):
     _server = None
 
     def handle(self):
-        data = self.request.recv(1024)
-        if not data:
-            print('Client disconnected before data was received.')
-            return
-        parsed = json.loads(data)
-        self._server.handle(self.request, parsed)
+        while True:
+            data = self.request.recv(1024)
+            if not data:
+                print('Client disconnected before data was received.')
+                return
+            parsed = json.loads(data)
+            self._server.handle(self.request, parsed)
 
-def main():
-
-    server = Server(ServerData())
-    Handler._server = server
-    server_address = 'uds_socket'
-    with socketserver.UnixStreamServer(server_address, Handler) as s:
-        s.serve_forever()
-
-if __name__ == '__main__':
-    main()
+class MultithreadedServer(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
     pass
 
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('servername', help='Name to use for the server')
+    return parser.parse_args(args)
 
+def main(args):
+    server = Server(ServerData())
+    Handler._server = server
+    if os.path.exists(args.servername):
+        os.unlink(args.servername)
+    with MultithreadedServer(args.servername, Handler) as s:
+        s.serve_forever()
+    os.unlink(args.servername)
+
+def entrypoint():
+    import sys
+    import os
+    import daemon
+    with daemon.DaemonContext(detach_process=True):
+        os._exit(main(parse_args(sys.argv[1:])))
+
+if __name__ == '__main__':
+    entrypoint()

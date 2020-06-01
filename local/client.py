@@ -31,7 +31,7 @@ import shlex
 import json
 import socket
 
-from plugin import Message
+from plugin import Message, SERVER_NAME
 import pynvim
 
 REUSE_HELP = 'Reuse the most recently active editor'
@@ -39,29 +39,26 @@ SERVER_HELP = ('Open up a file using the server with given name. '
     'If no such server exists, create it.')
 
 class ConnectionServer():
-    def __init__(self):
-        pass
+    def __init__(self, servername):
+        self.servername = servername
 
     def connect(self):
-        server_address = './uds_socket'
         self.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.socket.connect(server_address)
+        self.socket.connect(self.servername)
 
     def get_mru(self) -> str:
-        self.socket.sendall(Message('mru-request').dumps())
+        self.socket.sendall(Message('mru-request').serialize())
         data = self.socket.recv(1024)
-        msg = Message.loads(data)
+        msg = Message.deserialize(data)
         if msg.name != 'mru-response':
             raise Exception('Received invalid response from server: ', str(msg))
-        return msg.client
+        return msg.data['mru']
 
 def remote_open_file(servername, filepath):
     filepath = re.sub(r' "\\\'', r'\\1', filepath)
-    client = pynvim.attach('socket', path=servername)
-    # TODO Add a command inside vim to 
-    # allow signaling when this file is closed.
-    client.command('tabe %s' % filepath)
-    client.close()
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+    sock.connect(servername)
+    sock.send(Message('command', **{'cmd': 'tabe %s' % filepath}).serialize())
 
 def parse_args(argv: [str]):
 
@@ -77,21 +74,19 @@ def parse_args(argv: [str]):
     return args
 
 def main(args):
-    # TODO: If remote, simply get mru and attempt to connect
     if args.remote:
-        con = ConnectionServer()
-        # TODO handle failure
+        con = ConnectionServer(SERVER_NAME)
         con.connect()
         mru = con.get_mru()
+        print(mru)
         if mru:
-            remote_open_file()
-
-
+            print(mru)
+            for f in args.files:
+                remote_open_file(mru, f)
     return 0
 
 def entrypoint():
     os._exit(main(parse_args(sys.argv[1:])))
 
 if __name__ == '__main__':
-    #remote_open_file('nvim.sock', 'editor .py\\')
     entrypoint()
