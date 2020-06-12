@@ -41,6 +41,7 @@ function! plugins#coc()
 endfunction
 
 function! plugins#gruvbox()
+    let g:gruvbox_guisp_fallback = "bg"
     " Set the background color for gitgutter
     let g:gruvbox_sign_column = 'bg0'
     set background=dark
