@@ -77,7 +77,8 @@ let g:netrw_liststyle=3 "netrw displays as tree by default, not single directory
 set modeline
 set noerrorbells
 set novisualbell
-set guifont=Monospace\ 10
+set guifont=Monospace\ 9
+set termguicolors " Enable true color support
 "Remove scrollbars
 set guioptions-=r
 set guioptions-=R
@@ -88,8 +89,9 @@ set guioptions-=T  " remove toolbar
 set guioptions+=k  " Resize the gui when gui elements are added/removed
 set guioptions+=c  " Simple dialogs, not annoying popups
 set guioptions+=e  " Use fancy tabs
+set mouse=a
 set showmatch   " Show matching brackets
-set number      " Show line numbers
+set relativenumber  " Show line numbers
 set ruler       " Always show ruler
 set wrap        " Wrap lines
 syntax enable   " Enable syntax highlighting
@@ -129,16 +131,6 @@ nnoremap Y y$
 
 "%% is maped to the directory of %
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-
-" Emacs command mode editing
-execute "set <M-d>=\ed"
-execute "set <M-b>=\eb"
-execute "set <M-f>=\ef"
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-d> <S-Right><C-w>
 
 " Close buffer without closing window
 nnoremap <C-X> :Bclose<CR>
@@ -226,11 +218,39 @@ function! ReturnToLastLocation()
     endif
 endfunction
 
+" Change line numbers
+" Based on: jeffkreeftmeijer/vim-numbertoggle
+set number relativenumber
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
+augroup END
+
 function! ToggleSidebar()
-    if exists(":GitGutterToggle")
-        GitGutterToggle
+    if !exists("g:ToggleSidebar#init")
+        let g:ToggleSidebar#type_num = &number
+        let g:ToggleSidebar#type_relnum = &relativenumber
+        let g:ToggleSidebar#auto_signcolumn = (&signcolumn == 'auto')
     endif
-    set invnumber
+    let g:ToggleSidebar#init = "true"
+
+    if g:ToggleSidebar#type_num
+        set invnumber
+    endif
+    if g:ToggleSidebar#type_relnum
+        set invrelativenumber
+    endif
+
+    if &signcolumn == 'auto' || (&signcolumn == 'yes' && g:ToggleSidebar#auto_signcolumn)
+        set signcolumn=no
+    else
+        if g:ToggleSidebar#auto_signcolumn
+            set signcolumn=auto
+        else
+            set signcolumn=yes
+        endif
+    endif
 endfunction
 
 function! ToggleShowColumn()
@@ -260,3 +280,12 @@ function! DiffWithSaved()
   exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! DiffSaved call DiffWithSaved()
+
+" Redirect the output of a Vim or external command into a scratch buffer
+function! Redir(cmd) abort
+    let output = execute(a:cmd)
+    tabnew
+    setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
+    call setline(1, split(output, "\n"))
+endfunction
+command! -nargs=1 Redir silent call Redir(<f-args>)
