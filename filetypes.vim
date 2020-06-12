@@ -17,11 +17,6 @@ function! DefaultConfig()
 endfunction
 
 function! RustFiletypeConfig()
-    nmap gd <Plug>(rust-def)
-    nmap gs <Plug>(rust-def-split)
-    nmap gx <Plug>(rust-def-vertical)
-    nmap <leader>gd <Plug>(rust-doc)
-
     setl tabstop=4
     setl softtabstop=4
     setl shiftwidth=4
