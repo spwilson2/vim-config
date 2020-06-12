@@ -15,7 +15,7 @@ DATE = '%s-%s-%s' % (now.year, now.month, now.day)
 header_sym = '='
 date_header = '%s\n%s' % (DATE, header_sym*len(DATE))
 
-additional_headings = ['Complete', 'Notes', 'Todo']
+additional_headings = ['Complete', 'Notes', 'Todo', 'Working-On']
 heading_sym = '^'
 
 def append_lines(linebuffer, lines):

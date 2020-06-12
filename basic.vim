@@ -103,7 +103,7 @@ set listchars=tab:»·,trail:·
 set nolist
 
 " Dont' use the terminal background color
-set t_ut=
+"set t_ut=
 
 set display=lastline
 

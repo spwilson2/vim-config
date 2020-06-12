@@ -100,6 +100,21 @@ endfunction
 function! MakeFiletypeConfig()
 endfunction
 
+function! Personal_C_FiletypeConfig()
+    setl tabstop=8
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=99
+    setl linebreak
+    setl cindent
+    setl cinoptions=:0,l1,t0,g0,(0
+    setl expandtab
+    setl formatoptions=crqnj12t
+    " Format
+    setl list
+    setl listchars=tab:»·,trail:·
+endfunction
+
 """""""""""""""""""""""""""""""""
 """"    `GHS Configuration`     "
 """""""""""""""""""""""""""""""""
@@ -107,7 +122,7 @@ function! GHS_C_FiletypeConfig()
     setl tabstop=8
     setl softtabstop=4
     setl shiftwidth=4
-    setl textwidth=80
+    setl textwidth=100
     setl linebreak
     setl cinoptions=
     setl noexpandtab
@@ -133,7 +148,8 @@ function! Try_C_FiletypeConfigs()
     "if (matchstr(expand('%:p'), '*/linux/*') == 0)
     "    call Linux_C_FiletypeConfig()
     "else
-        call GHS_C_FiletypeConfig()
+        "call GHS_C_FiletypeConfig()
+        call Personal_C_FiletypeConfig()
     "endif
 endfunction
 
