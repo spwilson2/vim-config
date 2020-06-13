@@ -79,6 +79,7 @@ set noerrorbells
 set novisualbell
 set guifont=Monospace\ 9
 set termguicolors " Enable true color support
+set cursorline " Highlight the current line
 "Remove scrollbars
 set guioptions-=r
 set guioptions-=R
