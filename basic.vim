@@ -179,6 +179,15 @@ set pastetoggle=<F2>
 " Reload all of vimrc
 command! ReloadConfig exec 'source ' . expand('~/.vim/vimrc')
 
+
+if has("nvim")
+    tnoremap <C-W>
+    augroup termopen
+        au!
+        autocmd TermOpen * startinsert
+    augroup END
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
