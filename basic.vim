@@ -20,11 +20,12 @@ set foldlevel=99
 
 " Don't change the EOF
 set nofixendofline
-
+" Don't add an extra space on join of strings
+set nojoinspaces
 
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
+  set switchbuf=useopen,newtab
 catch
 endtry
 
@@ -39,6 +40,9 @@ set hidden
 set history=100
 
 set sessionoptions=curdir,folds,help,tabpages,winsize
+
+" Automatically update files when they change outside the editor.
+set autoread
 
 " Persistent State for undos
 try
@@ -98,6 +102,7 @@ set wrap        " Wrap lines
 syntax enable   " Enable syntax highlighting
 set lazyredraw  " Dont' try to redraw while executing macros
 set showtabline=2
+set updatetime=500
 
 hi SpecialKey guifg=red ctermfg=red
 set listchars=tab:»·,trail:·
@@ -136,7 +141,7 @@ cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 " Close buffer without closing window
 nnoremap <C-X> :Bclose<CR>
 " Close the window
-nnoremap <C-Q> :q<CR>
+nnoremap <C-Q> :Bclose<CR>:q<CR>
 
 nnoremap <silent> <Leader>h     :setl invhls<cr><C-l>
 nnoremap <silent> <Leader>l     :call ToggleShowColumn()<CR>
@@ -162,6 +167,19 @@ nnoremap <silent> ]B :blast<CR>
 " Toggle linenumbers.
 nnoremap <C-N> :call ToggleSidebar()<CR>
 
+" jk | Escaping!
+inoremap jk <Esc>  
+xnoremap jk <Esc>
+cnoremap jk <C-c>
+nnoremap jkq <Esc>:q<CR>
+
+" Movement in insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-l> <C-o>a
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+inoremap <C-^> <C-o><C-^>
+
 " Move a line of text using ALT+[jk] or Command+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
@@ -185,8 +203,27 @@ if has("nvim")
     augroup termopen
         au!
         autocmd TermOpen * startinsert
+        tnoremap <a-a> <esc>a
+        tnoremap <a-b> <esc>b
+        tnoremap <a-d> <esc>d
+        tnoremap <a-f> <esc>f
     augroup END
+else
+    " Prefer using popups over previews for completion options.
+    set completeopt+=popup 
 endif
+
+" ----------------------------------------------------------------------------
+" Readline-style key bindings in command-line (excerpt from rsi.vim)
+" ----------------------------------------------------------------------------
+cnoremap        <C-A> <Home>
+cnoremap        <C-B> <Left>
+cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
+cnoremap        <M-b> <S-Left>
+cnoremap        <M-f> <S-Right>
+silent! exe "set <S-Left>=\<Esc>b"
+silent! exe "set <S-Right>=\<Esc>f"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions

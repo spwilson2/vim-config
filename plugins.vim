@@ -28,6 +28,12 @@ endfunction " airline
 function! plugins#fzf()
     nnoremap <silent> <Leader>b :Buffers<CR>
     nnoremap <silent> <Leader>f :Files<CR>
+    nnoremap <silent> <Leader><Enter>  :Buffers<CR>
+    nnoremap <silent> <Leader>L        :Lines<CR>
+    nnoremap <silent> <Leader>/       :Rg <C-R><C-W><CR>
+    xnoremap <silent> <Leader>/       y:Rg <C-R>"<CR>
+    nnoremap <silent> <Leader>"        :Rg <C-R>"<CR>
+    nnoremap <silent> <Leader>`        :Marks<CR>
 endfunction
 
 function! plugins#coc()
@@ -46,14 +52,41 @@ function! plugins#coc()
         return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
 
-    " GoTo code navigation.
-    nmap <leader>gd <Plug>(coc-definition)
-    nmap <leader>gy <Plug>(coc-type-definition)
-    nmap <leader>gi <Plug>(coc-implementation)
-    nmap <leader>gr <Plug>(coc-references)
-    nmap <leader>rr <Plug>(coc-rename)
-    nmap <leader>g[ <Plug>(coc-diagnostic-prev)
-    nmap <leader>g] <Plug>(coc-diagnostic-next)
+  function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'h' expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  let g:coc_global_extensions = ['coc-git', 'coc-solargraph',
+    \ 'coc-rust-analyzer', 'coc-python', 'coc-html', 'coc-json', 'coc-css', 'coc-html',
+    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'] " , 'coc-java']
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+
+    function! s:configure_coc_mappings()
+        " coc-git hotkeys
+        " show commit contains current position
+        nmap <silent> gc <Plug>(coc-git-commit)
+        " navigate chunks of current buffer
+        nmap <silent> [g <Plug>(coc-git-prevchunk)
+        nmap <silent> ]g <Plug>(coc-git-nextchunk)
+        " show chunk diff at current position
+        nmap <silent> gs <Plug>(coc-git-chunkinfo)
+
+        nmap <silent> gd <Plug>(coc-definition)
+        nmap <silent> gi <Plug>(coc-implementation)
+        nmap <silent> gr <Plug>(coc-references)
+        nmap <silent> rr <Plug>(coc-rename)
+    endfunction
+
+    augroup coc-config
+      autocmd!
+      autocmd VimEnter * call <SID>configure_coc_mappings()
+    augroup END
 
     let g:coc_disable_startup_warning = 1
 endfunction
@@ -71,18 +104,57 @@ function! plugins#gruvboxlight()
     set background=light
 endfunction
 
+function! plugins#ycmbuild(info)
+    !python3 ./install.py --go-completer --ts-completer
+    !curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
+    !chmod +x ~/.local/bin/rust-analyzer
+endfunction
+
 function! plugins#youcompleteme()
     " if python 3 not working. Set the path.
     let gycm_path_to_python_interpreter = '/usr/bin/python3'
     let g:ycm_show_diagnostics_ui = 1
     let g:ycm_enable_diagnostic_signs = 0
     let g:ycm_enable_diagnostic_highlighting = 0
+    let g:ycm_auto_hover = ""
+    let g:ycm_always_populate_location_list = 1
 
-    nnoremap <silent> <Leader>gd :YcmCompleter GoToDefinition<CR>
-    nnoremap <silent> <Leader>gr :YcmCompleter GoToReferences<CR>
+    nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+    nnoremap <leader>d <plug>(YCMHover)
+    nnoremap <silent> <leader>gr :YcmCompleter GoToReferences<CR>
+
+    augroup RustYcm
+        au!
+        au FileType rust let g:ycm_enable_diagnostic_signs = 1
+    augroup END
+
+    let g:ycm_language_server =
+      \ [
+      \   {
+      \     'name': 'rust',
+      \     'filetypes': [ 'rust' ],
+      \     'cmdline': [ 'rust-analyzer-linux' ],
+      \     'project_root_files': [ 'Cargo.toml' ]
+      \   }
+      \ ]
+
     "let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_global_conf.py'
     " Disable to turn off asking about running files.
     " let g:ycm_confirm_extra_conf = 1
+endfunction
+
+function! plugins#nerdtree()
+    nnoremap <leader>n :NERDTreeToggle<cr>
+    nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+      augroup nerd_loader
+        autocmd!
+        autocmd VimEnter * silent! autocmd! FileExplorer
+        autocmd BufEnter,BufNew *
+              \  if isdirectory(expand('<amatch>'))
+              \|   call plug#load('nerdtree')
+              \|   execute 'autocmd! nerd_loader'
+              \| endif
+      augroup END
 endfunction
 
 function! plugins#ale()
@@ -113,19 +185,20 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
 
     " Plugin for UNIX commands in command mode.
     MyPlug 'tpope/vim-eunuch'
+    MyPlug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle', 'configure': function('plugins#nerdtree')}
 
     " Async Linting
     "MyPlug 'w0rp/ale', {'configure': function('plugins#ale')}
-    
+
     " Improved Autocompletion
     "MyPlug 'Valloric/YouCompleteMe', {
-    "            \ 'do': 'python3 ./install.py --go-completer --rust-completer --ts-completer',
+    "            \ 'do': function('plugins#ycmbuild'),
     "            \ 'configure': function('plugins#youcompleteme')}
     "Plug 'rdnetto/YCM-Generator'
+    let g:fzf_action = {
+      \ 'return': 'tabe',}
 
-    "Extensions https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-    MyPlug 'neoclide/coc.nvim', {'branch': 'release',
-                            \ 'configure': function('plugins#coc')}
+    MyPlug 'neoclide/coc.nvim', {'branch': 'release', 'configure': function('plugins#coc')}
 
     " Fuzzy-find search of whatever (Tabs Buffers Files)
     MyPlug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' ,
@@ -151,7 +224,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
 
     " Git Plugins
     MyPlug 'tpope/vim-fugitive'
-    MyPlug 'airblade/vim-gitgutter'
+    "MyPlug 'airblade/vim-gitgutter'
     " Svn Plugin
     MyPlug 'juneedahamed/svnj.vim'
     " Language pack to outperform default syntax settings
