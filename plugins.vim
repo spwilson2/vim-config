@@ -1,29 +1,46 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Post Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! plugins#airline()
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline_powerline_fonts = 1
-    set noshowmode
+function! plugins#lightline()
     set laststatus=2
-    set showcmd " Show the chord in progress
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
+    set noshowmode
+    if !has('gui_running')
+      set t_Co=256
     endif
-    " unicode symbols
-    let g:airline_left_sep = '»'
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '«'
-    let g:airline_right_sep = '◀'
-    let g:airline_symbols.linenr = '␊'
-    let g:airline_symbols.linenr = '␤'
-    let g:airline_symbols.linenr = '¶'
-    let g:airline_symbols.branch = '⎇'
-    let g:airline_symbols.paste = 'ρ'
-    let g:airline_symbols.paste = 'Þ'
-    let g:airline_symbols.paste = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
-endfunction " airline
+
+    "let g:lightline = {
+    "      \ 'component_function': {
+    "      \   'readonly': 'LightlineReadonly',
+    "      \ },
+    "      \ }
+    "function! LightlineReadonly()
+    "  return &readonly && &filetype !=# 'help' ? 'RO' : ''
+    "endfunction
+
+endfunction
+"function! plugins#airline()
+"    let g:airline#extensions#tabline#enabled = 1
+"    let g:airline_powerline_fonts = 1
+"    set noshowmode
+"    set laststatus=2
+"    set showcmd " Show the chord in progress
+"    if !exists('g:airline_symbols')
+"        let g:airline_symbols = {}
+"    endif
+"    " unicode symbols
+"    let g:airline_left_sep = '»'
+"    let g:airline_left_sep = '▶'
+"    let g:airline_right_sep = '«'
+"    let g:airline_right_sep = '◀'
+"    let g:airline_symbols.linenr = '␊'
+"    let g:airline_symbols.linenr = '␤'
+"    let g:airline_symbols.linenr = '¶'
+"    let g:airline_symbols.branch = '⎇'
+"    let g:airline_symbols.paste = 'ρ'
+"    let g:airline_symbols.paste = 'Þ'
+"    let g:airline_symbols.paste = '∥'
+"    let g:airline_symbols.whitespace = 'Ξ'
+"endfunction " airline
 
 function! plugins#fzf()
     nnoremap <silent> <Leader>b :Buffers<CR>
@@ -181,7 +198,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     "MyPlug 'gruvbox-community/gruvbox', {'configure': function('plugins#gruvboxlight')}
 
     " Improved status line
-    MyPlug 'vim-airline/vim-airline', {'configure' : function('plugins#airline')}
+    MyPlug 'itchyny/lightline.vim', {'configure' : function('plugins#lightline')}
 
     " Plugin for UNIX commands in command mode.
     MyPlug 'tpope/vim-eunuch'
