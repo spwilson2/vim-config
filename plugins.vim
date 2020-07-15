@@ -47,8 +47,8 @@ function! plugins#fzf()
     nnoremap <silent> <Leader>f :Files<CR>
     nnoremap <silent> <Leader><Enter>  :Buffers<CR>
     nnoremap <silent> <Leader>L        :Lines<CR>
-    nnoremap <silent> <Leader>/       :Rg <C-R><C-W><CR>
-    xnoremap <silent> <Leader>/       y:Rg <C-R>"<CR>
+    nnoremap <silent> <Leader>/        :Rg<CR>
+    xnoremap <silent> <Leader>/        y:Rg <C-R>"<CR>
     nnoremap <silent> <Leader>"        :Rg <C-R>"<CR>
     nnoremap <silent> <Leader>`        :Marks<CR>
 endfunction
