@@ -55,6 +55,10 @@ endfunction
 
 function! plugins#coc()
 
+    
+    " Don't pass messages to |ins-completion-menu|.
+    set shortmess+=c
+
     " Use tab for trigger completion with characters ahead and navigate.
     " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
     " other plugin before putting this into your config.
@@ -245,7 +249,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     " Svn Plugin
     MyPlug 'juneedahamed/svnj.vim'
     " Language pack to outperform default syntax settings
-    MyPlug 'sheerun/vim-polyglot'
+    "MyPlug 'sheerun/vim-polyglot'
 
     " Adds RustFmt
     "MyPlug 'rust-lang/rust.vim', { 'for': 'rust'}
