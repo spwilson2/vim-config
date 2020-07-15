@@ -210,7 +210,9 @@ if has("nvim")
     augroup END
 else
     " Prefer using popups over previews for completion options.
-    set completeopt+=popup 
+    if v:version > 802
+        set completeopt+=popup
+    endif
 endif
 
 " ----------------------------------------------------------------------------
