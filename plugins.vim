@@ -56,6 +56,8 @@ endfunction
 function! plugins#coc()
 
     
+    " TextEdit might fail if hidden is not set.
+    set hidden
     " Don't pass messages to |ins-completion-menu|.
     set shortmess+=c
 
