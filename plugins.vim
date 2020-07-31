@@ -43,19 +43,24 @@ endfunction
 "endfunction " airline
 
 function! plugins#fzf()
+
+    command! -bang -nargs=? Locate
+                \ call fzf#vim#locate_sean('fd -- '.shellescape(<q-args>),
+                \ fzf#vim#with_preview(), <bang>0)
+
     nnoremap <silent> <Leader>b :Buffers<CR>
     nnoremap <silent> <Leader>f :Files<CR>
+    xnoremap <silent> <Leader>f        y:Locate <C-R>"<CR>
     nnoremap <silent> <Leader><Enter>  :Buffers<CR>
     nnoremap <silent> <Leader>L        :Lines<CR>
     nnoremap <silent> <Leader>/        :Rg<CR>
     xnoremap <silent> <Leader>/        y:Rg <C-R>"<CR>
     nnoremap <silent> <Leader>"        :Rg <C-R>"<CR>
     nnoremap <silent> <Leader>`        :Marks<CR>
+
 endfunction
 
 function! plugins#coc()
-
-    
     " TextEdit might fail if hidden is not set.
     set hidden
     " Don't pass messages to |ins-completion-menu|.
@@ -226,7 +231,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     " Fuzzy-find search of whatever (Tabs Buffers Files)
     MyPlug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' ,
                             \ 'configure': function('plugins#fzf')}
-    MyPlug 'junegunn/fzf.vim'
+    MyPlug 'spwilson2/fzf.vim', { 'branch': 'sean.wilson' }
 
     MyPlug 'spwilson2/cscope_maps'
 
