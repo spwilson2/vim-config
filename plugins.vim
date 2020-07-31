@@ -259,7 +259,7 @@ if !empty(glob("~/.vim/autoload/plug.vim"))
     "MyPlug 'sheerun/vim-polyglot'
 
     " Adds RustFmt
-    "MyPlug 'rust-lang/rust.vim', { 'for': 'rust'}
+    MyPlug 'rust-lang/rust.vim', { 'for': 'rust'}
     call myplug#end()
 else
     echom "Plugged can't be found"
